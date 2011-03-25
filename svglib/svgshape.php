@@ -31,10 +31,12 @@
 
 class SVGShape extends XMLElement
 {
+    const TRANSFORM_SEPARATOR = ' ';
+
     /**
      * Define the x coordinate of position
      *
-     * @param integer $x the x coordinate of position
+     * @param float $x the x coordinate of position
      */
     public function setX( $x )
     {
@@ -44,7 +46,7 @@ class SVGShape extends XMLElement
     /**
      * Return the x coordinate of position
      *
-     * @return string the x coordinate of position
+     * @return float the x coordinate of position
      */
     public function getX()
     {
@@ -54,7 +56,7 @@ class SVGShape extends XMLElement
     /**
      * Define the y coordinate of position
      *
-     * @param integer $y the y coordinate of position
+     * @param float $y the y coordinate of position
      */
     public function setY( $y )
     {
@@ -64,7 +66,7 @@ class SVGShape extends XMLElement
     /**
      * Return the y coordinate of position
      *
-     * @return string the y coordinate of position
+     * @return float the y coordinate of position
      */
     public function getY()
     {
@@ -91,6 +93,177 @@ class SVGShape extends XMLElement
         return $this->getAttribute( 'id' );
     }
 
-    //public $style;
+    /**
+     * Define the style of element, can be a SVGStyle element or an string
+     *
+     * @param SVGStyle $style SVGStyle element or an string
+     */
+    public function setStyle( $style )
+    {
+        if ( !$style )
+        {
+            $style = new SVGStyle();
+        }
+
+        $this->setAttribute( 'style', $style );
+    }
+
+    /**
+     * Return the style element
+     *
+     *
+     * @return SVGStyle style of element
+     */
+    public function getStyle()
+    {
+        return new SVGStyle( $this->getAttribute( 'style') );
+    }
+
+    /**
+     * Return the string with the transformation of shape
+     *
+     * @return string the transformation of shape
+     */
+    public function getTransform()
+    {
+        return $this->getAttribute('transform');
+    }
+
+    /**
+     *  Return the tranform attribute as a list/array
+     *
+     * @return array transform dados
+     */
+    public function getTranformList()
+    {
+        return explode(self::TRANSFORM_SEPARATOR ,  $this->getTransform() );
+    }
+
+    /**
+     * Define the transformation of Shape
+     *
+     * @param string $transform the transformation command
+     * @see http://www.w3.org/TR/SVG/coords.html#TransformAttribute
+     *
+     */
+    public function setTransform( $transform )
+    {
+        $this->setAttribute('transform', $transform );
+    }
+
+    /**
+     * Add a transformation of Shape
+     *
+     * @param string $transform the transformation command
+     * @see http://www.w3.org/TR/SVG/coords.html#TransformAttribute
+     *
+     */
+    public function addTransform( $transform )
+    {
+        if ( $this->getTransform() );
+        {
+            $transform = trim($this->getTransform()) . self::TRANSFORM_SEPARATOR . $transform;
+        }
+        
+        $this->setAttribute( 'transform', $transform );
+    }
+
+    /**
+     * rotate(<rotate-angle> [<cx> <cy>]), which specifies a rotation by <rotate-angle> degrees about a given point.
+     * If optional parameters <cx> and <cy> are not supplied, the rotate is about the origin of the current user coordinate system. The operation corresponds to the matrix [cos(a) sin(a) -sin(a) cos(a) 0 0].
+     * If optional parameters <cx> and <cy> are supplied, the rotate is about the point (cx, cy). The operation represents the equivalent of the following specification: translate(<cx>, <cy>) rotate(<rotate-angle>) translate(-<cx>, -<cy>)
+     *
+     * @param float $angle the rotation angle
+     * @param float $cx x of rotation point
+     * @param float $cy y of rotation point
+     * @see http://www.w3.org/TR/SVG/coords.html#TransformAttribute
+     */
+    public function rotate($angle, $cx = null, $cy = null )
+    {
+        if ( $cx && $cy )
+        {
+            $this->addTransform("rotate($angle,$cx,$cy)");
+        }
+        else
+        {
+            $this->addTransform("rotate($angle)");
+        }
+    }
+
+    /**
+     * scale(<sx> [<sy>]), which specifies a scale operation by sx and sy.
+     * @param float $sx
+     * @param float $sy If <sy> is not provided, it is assumed to be equal to <sx>.
+     * @see http://www.w3.org/TR/SVG/coords.html#TransformAttribute
+     */
+    public function scale( $sx, $sy = null )
+    {
+        if ( $sx && $sy )
+        {
+            $this->addTransform( "scale($sx, $sy)" );
+        }
+        else
+        {
+            $this->addTransform( "scale($sx)" );
+        }
+    }
+
+    /*
+
+    /**
+     * translate(<tx> [<ty>]), which specifies a translation by tx and ty
+     *
+     * Move the shape.
+     *
+     * @param float $tx translate x
+     * @param float $ty translate y If <ty> is not provided, it is assumed to be zero
+     */
+    public function translate( $tx, $ty = null )
+    {
+        if ( $ty )
+        {
+            $this->addTransform("translate($tx,$ty)");
+        }
+        else
+        {
+            $this->addTransform("translate($tx);");
+        }
+    }
+
+    /**
+     * skewX(<skew-angle>), which specifies a skew transformation along the x-axis.
+     *
+     * @param float $angle the skewX angle
+     */
+    public function skewX($angle)
+    {
+         $this->addTransform( "skewX($angle)" );
+    }
+
+    /**
+     * skewY(<skew-angle>), which specifies a skew transformation along the y-axis.
+     *
+     * @param float $angle the skewY angle
+     */
+    public function skewY($angle)
+    {
+         $this->addTransform( "skewY($angle)" );
+    }
+
+    /**
+     * matrix(<a> <b> <c> <d> <e> <f>), which specifies a transformation in the form of a transformation matrix of six values.
+     * matrix(a,b,c,d,e,f) is equivalent to applying the transformation matrix [a b c d e f].
+     *
+     * @param float $a
+     * @param float $b
+     * @param float $c
+     * @param float $d
+     * @param float $e
+     * @param float $f
+     */
+    public function matrix( $a, $b, $c, $d, $e, $f )
+    {
+        $this->addTransform( "matrix($a,$b,$c,$d,$e,$f)" );
+    }
 }
 ?>
