@@ -30,20 +30,16 @@
  */
 
 include_once('xmlelement.php'); //extends SimpleXmlElement
+include_once('svgstyle.php'); //generic shape
 include_once('svgshape.php'); //generic shape
 include_once('svgshapeex.php'); //extended shape
+include_once('svgpath.php'); //path object
 include_once('svgrect.php'); //rect object
 include_once('svgtext.php'); //text object
 include_once('svgimage.php'); //image object suports embed image
 
 
 /**
- * Task:
- * Only valid values in width and height;
- * Default pages format (like inkscape);
- * Support Corel and Adobe svg
- * Admin styles
- * transform="scale(0.46166939,2.1660522)"
  *
  * Needed to use:
  * SimpleXmlElement
@@ -54,8 +50,8 @@ include_once('svgimage.php'); //image object suports embed image
  * Reference site:
  * http://www.leftontheweb.com/message/A_small_SimpleXML_gotcha_with_namespaces
  * http://blog.jondh.me.uk/2010/10/resetting-namespaced-attributes-using-simplexml/
+ * http://www.w3.org/TR/SVG/
  */
-
 class SVGDocument extends XMLElement
 {
     const VERSION = '1.1';
@@ -63,6 +59,19 @@ class SVGDocument extends XMLElement
     const EXTENSION = 'svg';
     const EXTENSION_COMPACT = 'svgz';
     const HEADER = 'image/svg+xml';
+
+
+    /**
+     * Return the extension of a filename
+     * 
+     * @param string $filename the filename to get the extension
+     * @return string the filename to get the extension
+     */
+    protected static function getFileExtension($filename)
+    {
+        $explode = explode('.', $filename);
+        return strtolower( $explode[ count( $explode ) -1 ]  );
+    }
 
     /**
      * Return a SVGDocument
@@ -73,17 +82,14 @@ class SVGDocument extends XMLElement
      *
      * @param $filename the file to load
      *
-     * @return <SVGDocument>
+     * @return SVGDocument
      */
     public static function getInstance( $filename = null )
     {
         if ( $filename )
         {
-            $explode = explode('.', $filename);
-            $ext = strtolower( $explode[ count( $explode ) -1 ]  );
-
             //if is svgz use compres.zlib to load the compacted SVG
-            if ( $ext == self::EXTENSION_COMPACT )
+            if ( SVGDocument::getFileExtension( $filename ) == self::EXTENSION_COMPACT )
             {
                 //verify if zlib is installed
                 if ( ! function_exists( 'gzopen' ) )
@@ -135,31 +141,82 @@ class SVGDocument extends XMLElement
     }
 
     /**
+     * Export the object as xml text, OR xml file.
+     *
+     * If the file extension is svgz, the function will save it correctely;
+     *
+     * @param string $filename the file to save, is optional, you can output to a var
+     * @return string the xml string if filename is not passed
+     */
+    public function asXML( $filename = null )
+    {
+        //if is svgz use compres.zlib to load the compacted SVG
+        if ( SVGDocument::getFileExtension( $filename ) == self::EXTENSION_COMPACT )
+        {
+            //verify if zlib is installed
+            if ( ! function_exists( 'gzopen' ) )
+            {
+                throw new Exception('GZip support not installed.');
+                return false;
+            }
+
+            $filename = 'compress.zlib://'.$filename;
+        }
+
+        //need to do it, if pass a null filename it return an error
+        if ( $filename )
+        {
+            return parent::asXML( $filename );
+        }
+
+        return parent::asXML( );
+    }
+
+    /**
+     * Magic toString function.
+     *
+     * @return string
+     *
+     */
+    public function __toString()
+    {
+        return $this->asXML();
+    }
+
+    /**
      * Export to a image file, consider file extension
      * Uses imageMagick
      *
-     * @param <string> $filename
-     * @param <integer> $width the width of exported image
-     * @param <integer> $height the height of exported image
+     * @param string $filename
+     * @param integer $width the width of exported image
+     * @param integer $height the height of exported image
+     * @param boolean $respectRatio respect the ratio, image proportion
      */
-    public function export($filename, $width=null, $height=null)
+    public function export($filename, $width=null, $height=null, $respectRatio = false )
     {
         $image = new Imagick();
-        
-        $image->readImageBlob( $this->asXML() );
 
-        if ( $width && $height )
+        $ok = $image->readImageBlob( $this->asXML() );
+
+        if ( $ok )
         {
-            $image->thumbnailImage( $width, $height, true );
+            if ( $width && $height )
+            {
+                $image->thumbnailImage( $width, $height, $respectRatio );
+            }
+
+            $image->writeImage( $filename );
+
+            $ok = true;
         }
 
-        $image->writeImage($filename, true);
+        return $ok;
     }
 
     /**
      * Define the version of SVG document
      *
-     * @param <string> $version
+     * @param string $version
      */
     public function setVersion( $version )
     {
@@ -169,7 +226,7 @@ class SVGDocument extends XMLElement
     /**
      * Get the version of SVG document
      *
-     * @param <string> $version
+     * @param string $version
      */
     public function getVersion()
     {
@@ -182,18 +239,17 @@ class SVGDocument extends XMLElement
      * @example setWidth('350px');
      * @example setWidth('350mm');
      *
-     * @param <string> $width
+     * @param string $width
      */
     public function setWidth( $width )
     {
-        //remove to allow edit
         $this->setAttribute('width', $width);
     }
 
     /**
      * Returns the width of page
      *
-     * @return <string> the width of page
+     * @return string the width of page
      */
     public function getWidth( )
     {
@@ -203,7 +259,7 @@ class SVGDocument extends XMLElement
     /**
      * Define the height of page.
      *
-     * @param <string> $height
+     * @param string $height
      * 
      * @example setHeight('350mm');
      * @example setHeight('350px');
@@ -216,7 +272,7 @@ class SVGDocument extends XMLElement
     /**
      * Returns the height of page
      *
-     * @return <string> the height of page
+     * @return string the height of page
      */
     public function getHeight( )
     {
@@ -226,7 +282,7 @@ class SVGDocument extends XMLElement
     /**
      * Add a shape to SVG graphics
      *
-     * @param <XMLElement> $append the element to append
+     * @param XMLElement $append the element to append
      */
     public function addShape( $append )
     {

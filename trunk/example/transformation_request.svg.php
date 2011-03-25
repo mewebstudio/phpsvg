@@ -1,13 +1,14 @@
 <?php
 /**
  *
- * Description: Show how to use image in svg, extract image from SVG and add image to SVG
+ * Description: Show how to translations and dinamic SVG generation using request
  *
  * Blog: http://trialforce.nostaljia.eng.br
  *
  * Started at Mar 11, 2011
  *
  * @author Eduardo Bonfandini
+ * @example transformation_request.svg.php?fill=green&stroke=blue&rotate=45&translate=10,5
  *
  *-----------------------------------------------------------------------
  *   This program is free software; you can redistribute it and/or modify
@@ -26,21 +27,35 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
+
 require_once "../svglib/svglib.php";
-//get one SVG with one image
-$svg = SVGDocument::getInstance( 'resource/image.svg' );
-//convert the image to SVGImage object
-$embed= $svg->getElementById('stickEmbed');
-//convert the element to an image
-$image = new SVGImage( $embed->asXML() ) ;
-//export the image to a file, if is png
-if ( $image->getImageData()->mime == 'image/png' )
+
+$rotate = $_REQUEST['rotate']; //rotate the square using passed angle
+$translate = $_REQUEST['translate']; //rotate the square using passed angle
+$file = $_REQUEST['file']; //load the file passed
+$fill = $_REQUEST['fill'] ? $_REQUEST['fill'] : 'red';
+$stroke = $_REQUEST['stroke'] ? $_REQUEST['stroke'] : 'black';
+
+$svg = SVGDocument::getInstance( $file );
+
+$style = new SVGStyle();
+$style->setFill( $fill );
+$style->setStroke( $stroke );
+
+$rect = SVGRect::getInstance( 50, 50, 'myRect', 100, 100, $style );
+
+if ( $rotate )
 {
-    file_put_contents( 'output/test.png' , $image->getImage() );
-    //chmod( 'output/test.png' , '0777');
+    //uses the x and y properties to align the rect
+    $rect->rotate( $rotate , $rect->getX()*2,$rect->getY()* 2 );
 }
-//add a new image to SVG (embed)
-$svg->addShape( SVGImage::getInstance(50, 50, 'myImage', 'resource/stick.png') );
-//make the output to browser
+
+if ( $translate )
+{
+    $translate = explode(',',$translate);
+    $rect->translate($translate[0], $translate[1]);
+}
+
+$svg->addShape( $rect );
 $svg->output();
 ?>

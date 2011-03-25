@@ -1,11 +1,13 @@
 <?php
 /**
  *
- * Description: Show how to use image in svg, extract image from SVG and add image to SVG
+ * Description: Implementation of Path.
  *
  * Blog: http://trialforce.nostaljia.eng.br
  *
- * Started at Mar 11, 2011
+ * Started at Mar 18, 2010
+ *
+ * @version 0.1
  *
  * @author Eduardo Bonfandini
  *
@@ -26,21 +28,33 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-require_once "../svglib/svglib.php";
-//get one SVG with one image
-$svg = SVGDocument::getInstance( 'resource/image.svg' );
-//convert the image to SVGImage object
-$embed= $svg->getElementById('stickEmbed');
-//convert the element to an image
-$image = new SVGImage( $embed->asXML() ) ;
-//export the image to a file, if is png
-if ( $image->getImageData()->mime == 'image/png' )
+
+class SVGPath extends SVGShape
 {
-    file_put_contents( 'output/test.png' , $image->getImage() );
-    //chmod( 'output/test.png' , '0777');
+    /**
+     * Get a instance of a Path.
+     *
+     * @param string or array $d the points
+     * @param string $id of element
+     * @param string or SVGStyle object $style of element
+     * 
+     * @return SVGPath
+     */
+    public static function getInstance( $d, $id, $style )
+    {
+        $path = new SVGPath('<path></path>');
+
+        //if is as array make implode to glue it
+        if ( is_array( $d ) )
+        {
+            $d = implode( ' ', $d);
+        }
+
+        $path->setAttribute('d', $d);
+        $path->setId( $id );
+        $path->setAttribute( 'style', $style );
+
+        return $path;
+    }
 }
-//add a new image to SVG (embed)
-$svg->addShape( SVGImage::getInstance(50, 50, 'myImage', 'resource/stick.png') );
-//make the output to browser
-$svg->output();
 ?>

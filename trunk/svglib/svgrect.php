@@ -31,7 +31,7 @@
 
 class SVGRect extends SVGShapeEx
 {
-    public static function getInstance( $x, $y, $id, $style, $width, $height )
+    public static function getInstance( $x, $y, $id, $width, $height, $style = null )
     {
         $rect = new SVGRect('<rect></rect>');
 
@@ -40,7 +40,7 @@ class SVGRect extends SVGShapeEx
         $rect->setWidth( $width );
         $rect->setHeight( $height );
         $rect->setId( $id );
-        $rect->setAttribute( 'style', $style );
+        $rect->setStyle($style);
 
         return $rect;
     }
