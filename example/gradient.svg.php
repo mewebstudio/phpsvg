@@ -1,13 +1,11 @@
 <?php
 /**
  *
- * Description: Implementation of Rect.
+ * Description: Drawing example
  *
  * Blog: http://trialforce.nostaljia.eng.br
  *
- * Started at Mar 11, 2010
- *
- * @version 0.1
+ * Started at Mar 11, 2011
  *
  * @author Eduardo Bonfandini
  *
@@ -28,20 +26,26 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-class SVGRect extends SVGShapeEx
-{
-    public static function getInstance( $x, $y, $id, $width, $height, $style = null )
-    {
-        $rect = new SVGRect('<rect></rect>');
+require_once "../svglib/svglib.php";
 
-        $rect->setX( $x );
-        $rect->setY( $y );
-        $rect->setWidth( $width );
-        $rect->setHeight( $height );
-        $rect->setId( $id );
-        $rect->setStyle($style);
+$svg = SVGDocument::getInstance();
 
-        return $rect;
-    }
-}
+$stop = SVGStop::getInstance();
+$stop->setColor('red');
+$stop->setOpacity(1);
+$stops[] = $stop;
+
+$stops[] = SVGStop::getInstance( null , "stop-color:blue;stop-opacity:1");
+$stops[] = SVGStop::getInstance( null , "stop-color:black;stop-opacity:1");
+$gradient = SVGLinearGradient::getInstance( null, $stops);
+$svg->addDefs( $gradient );
+
+//$style = new SVGStyle( array( 'fill' => $gradient ));//TODO make it work
+$style = new SVGStyle( );
+$style->setFill( $gradient );
+
+$rect = SVGRect::getInstance( 10, 20, null , '100', '200', $style );
+
+$svg->append( $rect );
+$svg->output();
 ?>

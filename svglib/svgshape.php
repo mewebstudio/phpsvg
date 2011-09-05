@@ -74,26 +74,6 @@ class SVGShape extends XMLElement
     }
 
     /**
-     * Define the id of the object
-     *
-     * @param string $id
-     */
-    public function setId( $id )
-    {
-        $this->setAttribute( 'id', $id );
-    }
-
-    /**
-     * Return the id of element
-     *
-     * @return string the id of element
-     */
-    public function getId()
-    {
-        return $this->getAttribute( 'id' );
-    }
-
-    /**
      * Define the style of element, can be a SVGStyle element or an string
      *
      * @param SVGStyle $style SVGStyle element or an string

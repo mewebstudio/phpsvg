@@ -28,36 +28,45 @@
  */
 require_once "../svglib/svglib.php";
 
+#start a svgDocument using apple.svg as base document
 $svg = SVGDocument::getInstance( 'resource/apple.svg' );
+#start a svgDocument using default (minimal) svg document
 #$svg = SVGDocument::getInstance( ); //default
 
+#some possible svg functions
 #$svg->getWidth();
 #$svg->getHeight();
 #$svg->getVersion();
 
-//$style = 'fill:#f2f2f2;stroke:#e1a100;';
+#example of criation of an svg style
+#$style = 'fill:#f2f2f2;stroke:#e1a100;';
+#create a new rect with, x and y position, id, width and heigth, and the style
 $rect = SVGRect::getInstance( 0, 5, 'myRect', 228, 185, new SVGStyle( array('fill'=>'red', 'stroke' =>'blue' ) ) );
 //$rect->style->setFill('#f2f2f2'); //still not work
 //$rect->style->setStroke('#e1a100'); //still not work
-$rect->setWidth( $svg->getWidth() ); //make the rect of the size of pages
-$rect->skewX(5); //transformation
-$rect->rotate(1); //rotation
-$svg->addShape( $rect );
 
-$style = new SVGStyle();
+$rect->setWidth( $svg->getWidth() ); #make the rect of the size of pages
+$rect->skewX(5); #make a skew x transformation
+$rect->rotate(1); #make a rotation
+$svg->addShape( $rect ); #add the rect to svg
+
+$style = new SVGStyle(); #create a style object
+#set fill and stroke
 $style->setFill('#f2f2f2');
 $style->setStroke('#e1a100');
 
-$svg->addShape( SVGText::getInstance( 22, 50, 'myText', 'This is a text', $style) );
-$svg->addShape( SVGPath::getInstance( array('m 58,480','639,1'), 'myPath', 'fill:none;stroke:#000000;stroke-width:1px;') );
+$svg->addShape( SVGText::getInstance( 22, 50, 'myText', 'This is a text', $style) ); #create a text
+$svg->addShape( SVGPath::getInstance( array('m 58,480','639,1'), 'myPath', 'fill:none;stroke:#000000;stroke-width:1px;') );#create a path
 
-$svg->asXML('output/output.svg');
-$svg->export('/tmp/output.png');
-$svg->export('output/output.jpg');
-$svg->export('output/output.gif');
-$svg->export('output/thumb16x16.png',16,16,true);
+#many types of output
+$svg->asXML('output/output.svg'); #svg
+$svg->export('/tmp/output.png'); #png
+$svg->export('output/output.jpg'); #jpg
+$svg->export('output/output.gif'); #gif
+$svg->export('output/thumb16x16.png',16,16,true); #png resized using imagemagick
 $svg->export('output/thumb32x32.png',32,32,true);
 $svg->export('output/thumb64x64.png',64,64,true);
 
-$svg->output();
+#output to browser
+$svg->output(); //to browser, with
 ?>

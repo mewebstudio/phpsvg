@@ -31,6 +31,19 @@
 class XmlElement extends SimpleXMLElement
 {
     /**
+     * Value used to control last used id
+     * 
+     * @var integer
+     */
+    protected static $uniqueId = 0 ;
+    /**
+     * Define if is to generate identificator automagic
+     * 
+     * @var boolean if is to generate identificator automagic
+     */
+    public static $useAutoId = true ;
+
+    /**
      * Remove a attribute
      *
      * @param string $attribute name of attribute
@@ -87,13 +100,49 @@ class XmlElement extends SimpleXMLElement
     }
 
     /**
+     * Define identificator of element
+     *
+     * @param string $id
+     */
+    public function setId( $id )
+    {
+        if ( self::$useAutoId )
+        {
+            $id = $id ? $id : $this->getUniqueId();
+        }
+        
+        $this->setAttribute('id', $id );
+    }
+
+    /**
+     * Return identificator of element
+     *
+     * @return string identificator of element
+     */
+    public function getId()
+    {
+        return $this->getAttribute('id');
+    }
+
+    /**
+     * Returns a unique, never used before  identificator, Inkscape like.
+     *
+     * @return string a unique, never used before  identificator
+     */
+    public function getUniqueId()
+    {
+        return $this->getName() . self::$uniqueId++;
+    }
+
+    /**
      * Append other XMLElement, support namespaces.
      *
      * @param XmlElement $append
      */
     public function append( $append )
     {
-        if ( $append )
+        //if ( $append ) not working for 'defs'
+        if ( isset( $append ) )
         {
             //list all namespaces used in append object
             $namespaces = $append->getNameSpaces();
@@ -258,6 +307,17 @@ class XmlElement extends SimpleXMLElement
         }
 
         return $result;
+    }
+
+    /**
+     * Magic toString function.
+     *
+     * @return string
+     *
+     */
+    public function __toString()
+    {
+        return $this->asXML();
     }
 }
 ?>
