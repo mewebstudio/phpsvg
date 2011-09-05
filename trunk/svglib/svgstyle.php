@@ -33,7 +33,9 @@ class SVGStyle
 {
     public $fill;
     public $stroke;
-
+    public $stopColor;
+    public $stopOpacity;
+    
     /**
      * Construct the style
      *
@@ -53,7 +55,8 @@ class SVGStyle
 
                     if ( $styleElement[0] )
                     {
-                        $this->{$styleElement[0]} = $styleElement[1];
+                        $property = SVGStyle::toCamelCase( $styleElement[0]);
+                        $this->{$property} = $styleElement[1];
                     }
                 }
             }
@@ -75,12 +78,17 @@ class SVGStyle
     public function __toString()
     {
         $vars = get_object_vars($this);
+        $result = '';
 
         if ( is_array($vars) )
         {
             foreach ( $vars as $line => $info )
             {
-                $result .= "$line:$info;";
+                if ( isset($info) )
+                {
+                    $line  = SVGStyle::fromCamelCase( $line );
+                    $result .= "$line:$info;";
+                }
             }
         }
 
@@ -94,6 +102,11 @@ class SVGStyle
      */
     public function setFill($fill)
     {
+        if ( $fill instanceof SVGLinearGradient )
+        {
+            $fill = $this->url( $fill );
+        }
+        
         $this->fill = $fill;
     }
 
@@ -117,10 +130,62 @@ class SVGStyle
         $this->stroke = $stroke;
     }
 
+    /**
+     * Return the stroke (contour) color
+     *
+     * @return string
+     */
     public function getStroke( )
     {
         return $this->stroke;
     }
 
+    /**
+     * Make the url in some param
+     *
+     * @param XmlElement or string $content
+     *
+     * @return string
+     */
+    public function url( $content )
+    {
+        $url = $content;
+        
+        if ( $content instanceof XmlElement )
+        {
+            $url = '#'.$content->getId();
+        }
+        
+        return "url({$url})";
+    }
+
+    /**
+     * Make a not camelCase version of string
+     *
+     * http://www.paulferrett.com/2009/php-camel-case-functions/
+     *
+     * stopColor turns stop-color
+     *
+     * @param string $str
+     * @return string the new string
+     */
+    protected static function fromCamelCase($str)
+    {
+        $str[0] = strtolower($str[0]);
+        return preg_replace('/([A-Z])/e', "'-' . strtolower('\\1')", $str);
+    }
+
+    /**
+     * Converts a string to camelCase
+     *
+     * stop-color turns stopColor 
+     *
+     * @param string $str
+     * @return string
+     */
+    protected static function toCamelCase($str)
+    {
+        return preg_replace('/-([a-z])/e', "strtoupper('\\1')", $str);
+    }
 }
 ?>

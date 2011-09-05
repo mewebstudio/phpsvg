@@ -1,0 +1,12 @@
+VERSION 0.6 Set 05 2011
+- New classes:
+- Add support to LinearGradient (with his stop)
+- Add class to use Inkscape in command line to convert SVG's unsing Inkscape ( And example).
+- Improved some examples
+- SVG Document: Support to add Def (gradients), and formated xml export (Some editors cannot open xml in one line)
+- Add support to generate an uniqueId like Inkscape 'rect1', 'lineargradient2', etc.
+
+VERSION 0.5 Aug 03 2011
+- Initial version
+- Edit and load SVG simple or compacted, some usefull functions to edit it.
+- Some functions to export to PNG and other formats using imagemagick.

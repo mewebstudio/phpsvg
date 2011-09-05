@@ -4,7 +4,6 @@
     </head>
     <body>
         <form enctype="multipart/form-data" action="upload_and_convert.php" method="POST">
-        <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
         Choose SVG to upload: <input name="uploadedfile" type="file" /><br />
         <input type="submit" value="Upload File" />
         </form>
@@ -40,6 +39,8 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
+//to SVG convert
+ini_set('max_execution_time','0');
 
 require_once "../svglib/svglib.php";
 
@@ -47,6 +48,11 @@ if ( $_FILES )
 {
     $target_path = $target_path . basename( $_FILES['uploadedfile']['name']);
     $mime = $_FILES['uploadedfile']['type'];
+
+    if ( $_FILES['uploadedfile']['error'] )
+    {
+        die( 'Error on upload');
+    }
 
     if ( $mime != SVGDocument::HEADER )
     {
