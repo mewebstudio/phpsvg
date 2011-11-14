@@ -308,6 +308,63 @@ class XmlElement extends SimpleXMLElement
 
         return $result;
     }
+    
+    /**
+     * Define the title of the shape
+     * 
+     * The first title element will be considered as document title.
+     * 
+     * Is defined as alternative text in browser.
+     * 
+     * @param string $title 
+     */
+    public function setTitle( $title )
+    {
+        if ( !$this->title )
+        {
+            $this->addChild( 'title' , $title );
+        }
+        else
+        {
+            $this->title = $title;
+        }
+    }
+    
+    /**
+     * Return the title of element
+     * 
+     * @return string the title of element
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+    
+    /**
+     * Define the description of the element
+     * @param string $desc 
+     */
+    public function setDescription( $desc )
+    {
+        if ( !$this->desc )
+        {
+            $this->addChild( 'desc' , $desc );
+        }
+        else
+        {
+            $this->desc = $desc;
+        }
+    }
+    
+    /**
+     * Return the description of element
+     * 
+     * @return string the description of element
+     */
+    public function getDescription()
+    {
+        return $this->desc;
+    }
 
     /**
      * Magic toString function.

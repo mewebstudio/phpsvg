@@ -5,16 +5,18 @@ VERSION 0.7
 - Added support for radial gradient.
 - Added support for round rect.
 - Added javascript support.
+- Added support for title and description
 
 Examples:
 - Added javascript example.
 - Added merge example.
 - Added text replace.
+- Addes Line graph example
 
 VERSION 0.6 Set 05 2011
 - New classes:
 - Add support to LinearGradient (with his stop).
-- Add class to use Inkscape in command line to convert SVG's unsing Inkscape ( And example ). It's not a part of package, but is usefull.
+- Add class to use Inkscape in command line to convert SVG's using Inkscape ( And example ). It's not a part of package, but is usefull.
 - Improved some examples.
 - SVGDocument: Support to add Def (gradients), and formated xml export (Some editors cannot open xml in one line)
 - XMlELement: Add support to generate an uniqueId like Inkscape 'rect1', 'lineargradient2', etc.

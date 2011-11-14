@@ -33,6 +33,9 @@ $svg = SVGDocument::getInstance( 'resource/apple.svg' );
 #start a svgDocument using default (minimal) svg document
 #$svg = SVGDocument::getInstance( ); //default
 
+#define the title
+$svg->setTitle("Adding elements");
+
 #some possible svg functions
 #$svg->getWidth();
 #$svg->getHeight();

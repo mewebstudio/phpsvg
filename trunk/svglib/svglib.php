@@ -86,11 +86,17 @@ class SVGDocument extends XMLElement
      * Supports gzipped content.
      *
      * @param $filename the file to load
+     * @param $SVGClass class to construct the SVG, default SVGDocument, used for created using extended classes
      *
      * @return SVGDocument
      */
-    public static function getInstance( $filename = null )
+    public static function getInstance( $filename = null , $SVGClass = 'SVGDocument')
     {
+        if ( !$SVGClass )
+        {
+            $SVGClass = 'SVGDocument';
+        }
+        
         if ( $filename )
         {
             //if is svgz use compres.zlib to load the compacted SVG
@@ -115,12 +121,12 @@ class SVGDocument extends XMLElement
                 throw new Exception( 'Impossible to load content of file '. $filename);
             }
 
-            $svg = new SVGDocument( $content );
+            $svg = new $SVGClass( $content );
         }
         else
         {
             //create clean SVG
-            $svg = new SVGDocument( '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg></svg>' );
+            $svg = new $SVGClass( '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg></svg>' );
 
             //define the default parameters A4 pageformat
             $svg->setWidth( '210mm' );

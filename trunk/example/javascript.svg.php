@@ -28,7 +28,9 @@
  */
 require_once "../svglib/svglib.php";
 $svg = SVGDocument::getInstance( );
+$svg->setTitle("Javascript example");
 
+#add some javascript functions
 $svg->addScript("    
     function changeColor(evt, element)
     {
