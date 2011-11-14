@@ -33,6 +33,7 @@ class SVGStyle
 {
     public $fill;
     public $stroke;
+    public $strokeWidth;
     public $stopColor;
     public $stopOpacity;
     
@@ -125,9 +126,34 @@ class SVGStyle
      *
      * @param string $stroke the stroke color
      */
-    public function setStroke($stroke)
+    public function setStroke($stroke, $width = null )
     {
         $this->stroke = $stroke;
+        
+        $this->setStrokeWidth($width);
+    }
+    
+    /**
+     * Define the width of the stroke
+     * 
+     * @param integer $width width of the stroke
+     */ 
+    public function setStrokeWidth( $width )
+    {
+        if ( $width )
+        {
+            $this->strokeWidth = $width;
+        }
+    }
+    
+    /**
+     * Return the stroke width
+     * 
+     * @return type integer
+     */
+    public function getStrokeWidth()
+    {
+        return $this->strokeWidth;
     }
 
     /**

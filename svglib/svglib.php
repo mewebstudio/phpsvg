@@ -9,8 +9,6 @@
  *
  * Started at Mar 11, 2010
  *
- * @version 0.1
- *
  * @author Eduardo Bonfandini
  *
  *-----------------------------------------------------------------------
@@ -36,12 +34,15 @@ include_once('svgstyle.php'); //generic shape
 include_once('svgshape.php'); //generic shape
 include_once('svgshapeex.php'); //extended shape
 include_once('svgpath.php'); //path object
+include_once('svgline.php'); //line object
 include_once('svgrect.php'); //rect object
+include_once('svgcircle.php'); //circle object
+include_once('svgellipse.php'); //ellipse object
 include_once('svgtext.php'); //text object
 include_once('svgimage.php'); //image object suports embed image
-include_once('svglineargradient.php');
+include_once('svglineargradient.php'); //gradient 
+include_once('svgradialgradient.php'); //gradient
 include_once('svgstop.php'); //one color/stop of
-
 
 /**
  *
@@ -343,19 +344,31 @@ class SVGDocument extends XMLElement
         $this->append( $append );
     }
 
+    /**
+     * Add some element to defs, normally a gradient
+     * 
+     * @param XMLElement $element 
+     */
     public function addDefs( $element )
-    {
-        $this->createDefs();
-        $this->defs->append( $element );
-    }
-
-    protected function createDefs()
     {
         if ( !$this->defs )
         {
             $defs = new XMLElement('<defs></defs>');
             $this->append( $defs );
         }
+        
+        $this->defs->append( $element );
+    }
+    
+    /**
+     * Add some script content to svg
+     * 
+     * @param text $script
+     */
+    public function addScript( $script )
+    {
+        $element = new XMLElement('<script>'.$script.'</script>');
+        $this->append( $element );
     }
 
     /**
