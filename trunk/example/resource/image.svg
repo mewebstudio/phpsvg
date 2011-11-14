@@ -8,10 +8,34 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="210mm"
    height="297mm"
-   id="svg2">
+   id="svg2"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="image.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1311"
+     inkscape:window-height="745"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.2927"
+     inkscape:cx="372"
+     inkscape:cy="562.1"
+     inkscape:window-x="53"
+     inkscape:window-y="-5"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
   <defs
      id="defs4" />
   <metadata
@@ -22,54 +46,56 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <path
-     d="m 58,480 639,1"
+     d="m 58,497.1 639,1"
      id="line"
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     inkscape:connector-curvature="0" />
   <image
-     xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAABdCAYAAAD5VAWNAAAABHNCSVQICAgIfAhkiAAABKxJREFU
-eJztnF2IFlUYx3+7prtaqG0iigR+goIXtbFYKIpQBFEQdSlIYHgj2oVBUBeLV0k3kVAg1EWBICLe
-iZoRQTdtdRVW5AfImubX9iVqWznTxdmx2fc9z7wzc855zryv/uCB5cw753n+55w5nzML9xh9Sn5W
-A8uAIaAfOAN8peRbjRHgGJAW2E/AnlgB+mIpMIYRlFAsOG9dKXwH1YXm7TwwXzvouoxST2TeEuB3
-YK5y7JXJataHJcCfuuFXYyn+xOZFn1DUUIkx6j+znWxEUUcpRggjNKvlMT0p5ThGuNrNbJWamhKE
-FJrZTp8B9zvcu9pbFMU85zMzF8HLvEVRzHKfmbkIHvIWRTEP+8zMRbDLvVWY4TMzl6DPeIuimNM+
-M3MRrLGeTYGvfWbo2iy9lr6FPuB4YB+V2EP4cVhrV6Y0IcWO+g7WRw/YD2zykI+NzYHydeY8/ufU
-T2sKqMp8zE6FL9Hem3II5mJ2KlxFd4XYPCcwgdcR3uhmXMQI/2/VSpYvkK6rVYlVmPXsd9hFv0oD
-x1kfvI5d8ALtQLRWPA9iBLZyXcn/XbQEQ0OarqbgRqAleLaSn45oCV6k5KcjD+T+XgG8Avzr2ccd
-YJ1w7Q1g0LO/PP3AF1M2rdPcQv3ZUZMt0/MRLZ3mRAOCC2m3mdpHz55hrS3XWAwytd2bCT6JfWLQ
-C6TAReD71gufEr/phbBTwFqHAqvFJUsgl7SDAL1x2DatjDLV1BKcWNKi9Blagm2TC1shBEdLsG3Y
-u6zkexoxV0tXYjiNKfhODKf3BSvyRwynMQXfc53W7RhOYwmOtlDRELzQktYHTCr4bkND8BwhvWd7
-aenQvWcXDwNCes8uHpYI6TcVfLehIVg6MIvymr+GYKnp+t7/LoWGYKlz6tlOq1FoCJbG254dhyUf
-PdukpXH4bwXfbWgIfkRIv6Dgu43QgmcCa4RrNwL7VmcQGEc+Ank+XmhhOELxmc/JeKH5ZxvFYrOD
-6hdiBeiTWZgNuk5vEySYY8yu5wPkGrXZrjhh+mEYWeBvlrQUuIVpFV3HPMzxSavYBPPG/EPAz5br
-KfChfrjufIbcbDdM/eaZgt+sV47XiZeRm/K7Lb/9UvjdOeRpaKMYAK5ib8rjtC8SliAXzm6dkN04
-hL1X/gd4XLjnE+GeXzHT0cbyInJtvVZw3yBmE89232jAeJ2YjakRW1Mu8+Xpbuy1nAKLA8TrzAHk
-gJ8scf9M7AWWYh6TRrEBeXjZXyEf25w7K4AVHuN1YgAzB7Y15bNU/57xc+yivX437MI+5FpZWSO/
-Ry35ZbbVQ7xOPEH5CUYV3rHkl2B2RaL+56Vx7GIncFsAzED+bvGwQ74dWQC8BXwMfIt5Vq9gvhyV
-ml0KvOTB93ZLvlkB5N+GnQc8henUnLZ6HwP+sjjtZO+7OG3hB8HHJGZTIZ92E3jbxZltXO1kv7g4
-tLARuY+Qan+4rrNvSjrK7BzyFqwLxyvEkGIehVrsKpF5ViAHMc9SCIYxR6ll9sQSHGoYpg8PCXAN
-8wLZWeAo8B7wrIuDkrxJ50KfBPZWzbgRH0AKbMd0SkOYIWsC+BGzMDmF2Ug4jRF/H4n/AGCDqLPw
-zFJJAAAAAElFTkSuQmCC
-"
-     x="239.1367"
-     y="32.599117"
-     width="250.81415"
-     height="388.76193"
+     xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAABdCAYAAAD5VAWNAAAABHNCSVQICAgIfAhkiAAABKxJREFU eJztnF2IFlUYx3+7prtaqG0iigR+goIXtbFYKIpQBFEQdSlIYHgj2oVBUBeLV0k3kVAg1EWBICLe iZoRQTdtdRVW5AfImubX9iVqWznTxdmx2fc9z7wzc855zryv/uCB5cw753n+55w5nzML9xh9Sn5W A8uAIaAfOAN8peRbjRHgGJAW2E/AnlgB+mIpMIYRlFAsOG9dKXwH1YXm7TwwXzvouoxST2TeEuB3 YK5y7JXJataHJcCfuuFXYyn+xOZFn1DUUIkx6j+znWxEUUcpRggjNKvlMT0p5ThGuNrNbJWamhKE FJrZTp8B9zvcu9pbFMU85zMzF8HLvEVRzHKfmbkIHvIWRTEP+8zMRbDLvVWY4TMzl6DPeIuimNM+ M3MRrLGeTYGvfWbo2iy9lr6FPuB4YB+V2EP4cVhrV6Y0IcWO+g7WRw/YD2zykI+NzYHydeY8/ufU T2sKqMp8zE6FL9Hem3II5mJ2KlxFd4XYPCcwgdcR3uhmXMQI/2/VSpYvkK6rVYlVmPXsd9hFv0oD x1kfvI5d8ALtQLRWPA9iBLZyXcn/XbQEQ0OarqbgRqAleLaSn45oCV6k5KcjD+T+XgG8Avzr2ccd YJ1w7Q1g0LO/PP3AF1M2rdPcQv3ZUZMt0/MRLZ3mRAOCC2m3mdpHz55hrS3XWAwytd2bCT6JfWLQ C6TAReD71gufEr/phbBTwFqHAqvFJUsgl7SDAL1x2DatjDLV1BKcWNKi9Blagm2TC1shBEdLsG3Y u6zkexoxV0tXYjiNKfhODKf3BSvyRwynMQXfc53W7RhOYwmOtlDRELzQktYHTCr4bkND8BwhvWd7 aenQvWcXDwNCes8uHpYI6TcVfLehIVg6MIvymr+GYKnp+t7/LoWGYKlz6tlOq1FoCJbG254dhyUf PdukpXH4bwXfbWgIfkRIv6Dgu43QgmcCa4RrNwL7VmcQGEc+Ank+XmhhOELxmc/JeKH5ZxvFYrOD 6hdiBeiTWZgNuk5vEySYY8yu5wPkGrXZrjhh+mEYWeBvlrQUuIVpFV3HPMzxSavYBPPG/EPAz5br KfChfrjufIbcbDdM/eaZgt+sV47XiZeRm/K7Lb/9UvjdOeRpaKMYAK5ib8rjtC8SliAXzm6dkN04 hL1X/gd4XLjnE+GeXzHT0cbyInJtvVZw3yBmE89232jAeJ2YjakRW1Mu8+Xpbuy1nAKLA8TrzAHk gJ8scf9M7AWWYh6TRrEBeXjZXyEf25w7K4AVHuN1YgAzB7Y15bNU/57xc+yivX437MI+5FpZWSO/ Ry35ZbbVQ7xOPEH5CUYV3rHkl2B2RaL+56Vx7GIncFsAzED+bvGwQ74dWQC8BXwMfIt5Vq9gvhyV ml0KvOTB93ZLvlkB5N+GnQc8henUnLZ6HwP+sjjtZO+7OG3hB8HHJGZTIZ92E3jbxZltXO1kv7g4 tLARuY+Qan+4rrNvSjrK7BzyFqwLxyvEkGIehVrsKpF5ViAHMc9SCIYxR6ll9sQSHGoYpg8PCXAN 8wLZWeAo8B7wrIuDkrxJ50KfBPZWzbgRH0AKbMd0SkOYIWsC+BGzMDmF2Ug4jRF/H4n/AGCDqLPw zFJJAAAAAElFTkSuQmCC "
+     x="239.1"
+     y="49.68"
+     width="250.8"
+     height="388.8"
      id="stickEmbed" />
   <image
-     xlink:href="file:///home/trialforce/svn/phpsvg/example/resource/stick.png"
-     x="217.61464"
-     y="545.02386"
-     width="273.22372"
-     height="423.49677"
+     xlink:href="stick.png"
+     x="217.6"
+     y="562.1"
+     width="273.2"
+     height="423.5"
      id="stickLink">
     <desc
        id="desc3152">some linked styck</desc>
     <title
        id="title3150">linked styck</title>
   </image>
+  <text
+     xml:space="preserve"
+     style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="-450.49069"
+     y="93.295113"
+     id="text2987"
+     sodipodi:linespacing="125%"
+     transform="matrix(0,-1,1,0,0,0)"><tspan
+       sodipodi:role="line"
+       id="tspan2989"
+       x="-450.49069"
+       y="93.295113">This is my stick boy!</tspan></text>
+  <text
+     transform="matrix(0,-1,1,0,0,0)"
+     sodipodi:linespacing="125%"
+     id="text2991"
+     y="93.295113"
+     x="-945.92096"
+     style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     xml:space="preserve"><tspan
+       y="93.295113"
+       x="-945.92096"
+       id="tspan2993"
+       sodipodi:role="line">Other stick boy</tspan></text>
 </svg>

@@ -1,11 +1,11 @@
 <?php
 /**
  *
- * Description: Implementation of Rect.
+ * Description: Default example, show some usefull functions / adding elements
  *
  * Blog: http://trialforce.nostaljia.eng.br
  *
- * Started at Mar 11, 2010
+ * Started at Mar 11, 2011
  *
  * @author Eduardo Bonfandini
  *
@@ -17,7 +17,7 @@
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Library General Public License for more details.
  *
  *   You should have received a copy of the GNU Library General Public
@@ -26,40 +26,15 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-class SVGRect extends SVGShapeEx
-{
-    public static function getInstance( $x, $y, $id, $width, $height, $style = null )
-    {
-        $rect = new SVGRect('<rect></rect>');
+require_once "../svglib/svglib.php";
 
-        $rect->setX( $x );
-        $rect->setY( $y );
-        $rect->setWidth( $width );
-        $rect->setHeight( $height );
-        $rect->setId( $id );
-        $rect->setStyle($style);
+#start a svgDocument using apple.svg as base document
+$apple = SVGDocument::getInstance( 'resource/apple.svg' );
+$image = SVGDocument::getInstance( 'resource/image.svg' );
 
-        return $rect;
-    }
-    
-    /**
-     * Define the round of rect
-     * 
-     * @param integer $rx the round
-     */
-    public function setRound( $rx )
-    {
-        $this->addAttribute('rx', $rx );
-    }
-    
-    /** 
-     * Return the round of rect
-     *  
-     * @return integer return the round
-     */
-    public function getRound()
-    {
-        return $this->getAttribute('rx');
-    }
-}
+#add some part of image.svg into apple.svg
+$apple->addShape( $image->path );
+$apple->addShape( $image->image );
+
+$apple->output();
 ?>

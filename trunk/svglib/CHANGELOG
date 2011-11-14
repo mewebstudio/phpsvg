@@ -1,3 +1,16 @@
+VERSION 0.7 
+- Added support for line
+- Added support for circle.
+- Added support for ellipse.
+- Added support for radial gradient.
+- Added support for round rect.
+- Added javascript support.
+
+Examples:
+- Added javascript example.
+- Added merge example.
+- Added text replace.
+
 VERSION 0.6 Set 05 2011
 - New classes:
 - Add support to LinearGradient (with his stop).

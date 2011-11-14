@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Description: Implementation of Shape, is a generic class.
+ * Description: Implementation of Shape, is a generic class with basic shape functions.
  *
  * Blog: http://trialforce.nostaljia.eng.br
  *
@@ -244,6 +244,96 @@ class SVGShape extends XMLElement
     public function matrix( $a, $b, $c, $d, $e, $f )
     {
         $this->addTransform( "matrix($a,$b,$c,$d,$e,$f)" );
+    }
+    
+    /**
+     * Define the script execute on click in this shape
+     * 
+     * @param text $script
+     */
+    public function addOnclick($script)
+    {
+        $this->addAttribute('onclick', $script );
+    }
+    
+    /**
+     * Define the script execute on focus in
+     * 
+     * @param text $script
+     */
+    public function addOnFocusIn($script)
+    {
+        $this->addAttribute('onfocusin', $script );
+    }
+    
+    /**
+     * Define the script execute on focus out
+     * 
+     * @param text $script
+     */
+    public function addOnFocusOut($script)
+    {
+        $this->addAttribute('onfocusout', $script );
+    }
+    
+    /**
+     * Define the script execute on active
+     * 
+     * @param text $script
+     */
+    public function addOnActivate($script)
+    {
+        $this->addAttribute('onactivate', $script );
+    }
+    
+    /**
+     * Define the script execute on mouse down
+     * 
+     * @param text $script
+     */
+    public function addOnMouseDown($script)
+    {
+        $this->addAttribute('onmousedown', $script );
+    }
+    
+    /**
+     * Define the script execute on mouse up
+     * 
+     * @param text $script
+     */
+    public function addOnMouseUp($script)
+    {
+        $this->addAttribute('onmouseup', $script );
+    }
+    
+    /**
+     * Define the script execute on mouse over
+     * 
+     * @param text $script
+     */
+    public function addOnMouseOver($script)
+    {
+        $this->addAttribute('onmouseover', $script );
+    }
+    
+    /**
+     * Define the script execute on mouse move
+     * 
+     * @param text $script
+     */
+    public function addOnMouseMove($script)
+    {
+        $this->addAttribute('onmousemove', $script );
+    }
+    
+    /**
+     * Define the script execute on mouse out
+     * 
+     * @param text $script
+     */
+    public function addOnMouseOut($script)
+    {
+        $this->addAttribute('onmouseout', $script );
     }
 }
 ?>
