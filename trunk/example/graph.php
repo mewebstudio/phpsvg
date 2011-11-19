@@ -70,7 +70,7 @@ class SVGLineGraph extends SVGDocument
         
     }
     
-    public function addData( $data , $style)
+    public function addData( $data , $style = null)
     {
         if ( ! $style )
         {

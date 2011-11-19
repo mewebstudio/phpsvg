@@ -26,7 +26,7 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-
+echo '<pre>';
 require_once "../svglib/svglib.php";
 $svg = SVGDocument::getInstance( 'resource/image.svg' );
 
@@ -47,4 +47,5 @@ echo "Elements with id\n";
 $result = $svg->getElementsByAttribute( 'id', '' ,'!=');
 
 var_dump($result);
+echo '</pre>';
 ?>

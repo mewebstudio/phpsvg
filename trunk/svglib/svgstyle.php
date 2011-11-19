@@ -42,7 +42,7 @@ class SVGStyle
      *
      * @param array $style an array with styles
      */
-    public function __construct( $style )
+    public function __construct( $style = null )
     {
         if (is_string($style) )
         {

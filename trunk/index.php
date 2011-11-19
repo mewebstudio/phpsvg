@@ -29,7 +29,7 @@
             foreach ( $examples as $line => $info )
             {
                 $name = basename($info);
-                echo "\n        <a href='$info'>$name</a>&nbsp; - <a href='http://svglib/viewExample?example={$name}'>View source</a><br/>";
+                echo "\n        <a href='$info'>$name</a>&nbsp; - <a href='viewExample.php?example={$name}'>View source</a><br/>";
             }
         }
         ?>
