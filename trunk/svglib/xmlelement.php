@@ -208,7 +208,7 @@ class XmlElement extends SimpleXMLElement
         }
         else
         {
-            if ( $this->count() > 0 )
+            if ( count( $this->children() )  > 0 )
             {
                 foreach ( $this->children() as $line => $child )
                 {
@@ -224,20 +224,6 @@ class XmlElement extends SimpleXMLElement
 
         return null;
     }
-    
-    /**
-     * Make a count in childrens of element
-     * 
-     * In some versions of php ( < 5.3 ) this function do not exists
-     * so it is created.
-     *
-     * @return int count in childrens of element
-     */
-    public function count()
-    {
-        return count( $this->children() );
-    }
-
 
     /**
      * Recursive function that search elements that match the condition.
@@ -465,7 +451,7 @@ class XmlElement extends SimpleXMLElement
 }
 
 #create the function if it not exists php < 5.3
-if ( !function_exists('mime_content_type ') )
+if ( !function_exists('mime_content_type') )
 {
     function mime_content_type($filename)
     {
