@@ -30,7 +30,7 @@
  */
 class SVGStop extends XmlElement
 {
-    public static function getInstance( $id, $style, $offset )
+    public static function getInstance( $id = null, $style = null, $offset = null )
     {
         $stop = new SVGStop( '<stop></stop>' );
 
