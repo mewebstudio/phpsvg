@@ -46,12 +46,12 @@ require_once "../svglib/svglib.php";
 
 if ( $_FILES )
 {
-    $target_path = $target_path . basename( $_FILES['uploadedfile']['name']);
+    $target_path = 'output/'. basename( $_FILES['uploadedfile']['name']);
     $mime = $_FILES['uploadedfile']['type'];
 
     if ( $_FILES['uploadedfile']['error'] )
     {
-        die( 'Error on upload');
+        die( 'Error on upload.');
     }
 
     if ( $mime != SVGDocument::HEADER )
