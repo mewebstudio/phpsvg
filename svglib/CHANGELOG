@@ -1,3 +1,12 @@
+VERSION 0.8 - Jan 1 2012
+- Better documentation
+- Better error control
+- Support for export images using Inkscape it's add exporting formats to png,ps,eps,pdf,plain-svg. Support windows Inkscape.
+- Add inkscape as a fallback when imagemagic is not present. Each one will try to use other if fail.
+- Support for humanreadable xml or not.
+- Add a simple example.
+- Removed some warnings and notices.
+
 VERSION 0.7 - Nov 16 2011
 - Added support for line
 - Added support for circle.

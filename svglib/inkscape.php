@@ -1,7 +1,9 @@
-<?php
+aa4400ff<?php
 /*
  *
- * Description: Implementation SVGDocument inlude all other libs
+ * Description: Interface with command-line Inkscape
+ * While obviously Inkscape is primarily intended as a GUI application,
+ * it can be used for doing SVG processing on the command line as well.
  *
  * @link http://trialforce.nostaljia.eng.br
  * @link http://www.w3.org/TR/SVG/
@@ -12,16 +14,23 @@
  *
  * @author Eduardo Bonfandini
  *
- * Inkscape is a GUI editor for Scalable Vector Graphics (SVG) format drawing files, with capabilities similar to Adobe Illustrator, CorelDraw, Xara Xtreme, etc. Inkscape features
- * include versatile shapes, bezier paths, freehand drawing, multi-line text, text on path, alpha blending, arbitrary affine transforms, gradient and pattern fills, node editing, many
- * export and import formats including PNG and PDF, grouping, layers, live clones, and a lot more.  The interface is designed to be comfortable and efficient for skilled users, while
- * remaining conformant to GNOME standards so that users familiar with other GNOME applications can learn its interface rapidly.
+ * Inkscape is a GUI editor for Scalable Vector Graphics (SVG) format drawing files,
+ * with capabilities similar to Adobe Illustrator, CorelDraw, Xara Xtreme, etc. Inkscape features
+ * include versatile shapes, bezier paths, freehand drawing, multi-line text, text on path,
+ * alpha blending, arbitrary affine transforms, gradient and pattern fills, node editing, many
+ * export and import formats including PNG and PDF, grouping, layers, live clones, and a lot more.
+ * The interface is designed to be comfortable and efficient for skilled users, while
+ * remaining conformant to GNOME standards so that
+ * users familiar with other GNOME applications can learn its interface rapidly.
  *
- * SVG is a W3C standard XML format for 2D vector drawing. It allows defining objects in the drawing using points, paths, and primitive shapes.  Colors, fonts, stroke width, and so
- * forth are specified as `style' attributes to these objects.  The intent is that since SVG is a standard, and since its files are text/xml, it will be possible to use SVG files in a
- * sizeable number of programs and for a wide range of uses.
+ * SVG is a W3C standard XML format for 2D vector drawing.
+ * It allows defining objects in the drawing using points, paths, and primitive shapes.
+ * Colors, fonts, stroke width, and so forth are specified as `style' attributes to these objects.
+ * The intent is that since SVG is a standard, and since its files are text/xml,
+ * it will be possible to use SVG files in a sizeable number of programs and for a wide range of uses.
  *
- * Inkscape uses SVG as its native document format, and has the goal of becoming the most fully compliant drawing program for SVG files available in the Open Source community.
+ * Inkscape uses SVG as its native document format,
+ * and has the goal of becoming the most fully compliant drawing program for SVG files available in the Open Source community.
  *
  * List of not implement options:
  *
@@ -207,13 +216,16 @@ class Inkscape
      * @var string
      */
     protected $lastExecuteResult;
+    
+    protected $lastCmd;
 
     public function  __construct( $filename )
     {
+        $this->addParam( 'without-gui' );
         $this->setFile( $filename );
     }
 
-    public function addParam( $param, $value )
+    public function addParam( $param, $value = NULL )
     {
         if ( $param )
         {
@@ -221,7 +233,7 @@ class Inkscape
         }
     }
 
-    public function setParam( $param, $value )
+    public function setParam( $param, $value = NULL )
     {
         $this->clearParams();
         $this->params[$param] = $value;
@@ -326,10 +338,10 @@ class Inkscape
     public function getHelp()
     {
         $tmpParams = $this->getParams();
-        $help = $this->setParam('--help');
+        $this->setParam('help');
         $exec = $this->execute();
         $this->setParams( $tmpParams );
-
+        
         return $exec;
     }
     
@@ -342,7 +354,7 @@ class Inkscape
     public function getUsage()
     {
         $tmpParams = $this->getParams();
-        $help = $this->setParam('--usage');
+        $this->setParam('usage');
         $exec = $this->execute();
         $this->setParams( $tmpParams );
 
@@ -360,7 +372,7 @@ class Inkscape
     public function getVersion()
     {
         $tmpParams = $this->getParams();
-        $this->setParam('--version');
+        $this->setParam('version');
         $exec = $this->execute();
         $this->setParams( $tmpParams );
         
@@ -369,7 +381,8 @@ class Inkscape
 
     /**
      * 
-     * Open specified document(s).  Option string may be omitted, i.e. you can list the filenames without -f.
+     * Open specified document(s).
+     * Option string may be omitted, i.e. you can list the filenames without -f.
      *
      * @param string $filename
      */
@@ -430,7 +443,7 @@ class Inkscape
         if ( in_array( $format, $availableFormat ) )
         {
             $this->addParam( 'export-'.$format , $filename );
-            $result = $this->execute();
+            $this->execute();
 
             if ( file_exists( $filename ) )
             {
@@ -438,13 +451,19 @@ class Inkscape
             }
             else
             {
-                throw new Exception( 'Impossible to save file in path:' . $filename );
-                return false;
+                $msg = '';
+                
+                if ( !defined( 'INKSCAPE_PATH'))
+                {
+                    $msg = ' Define INKSCAPE_PATH is not defined. Try to define it.';
+                }
+                
+                throw new Exception( 'Impossible to save file in path : ' . $filename . ' - Inkcape cmd: '. $this->lastCmd . ' - Inkscape Error Message = ' . $this->lastExecuteResult . $msg  );
             }
         }
         else
         {
-            throw new Exception( 'Format not available.' );
+            throw new Exception( 'Format not available:' .$format .'.');
         }
     }
 
@@ -459,7 +478,7 @@ class Inkscape
     }
 
     /**
-     * Execute the inkscape
+     * Execute the inkscape.
      *
      * @param string some extra content for exec command
      *
@@ -467,9 +486,14 @@ class Inkscape
      */
     public function execute( $extraParam = null )
     {
-        $exec = 'inkscape ';
-
-        $this->addParam( 'without-gui');
+        if ( defined( 'INKSCAPE_PATH'))
+        {
+            $exec = INKSCAPE_PATH;
+        }
+        else
+        {
+            $exec = 'inkscape';
+        }
 
         if ( is_array( $this->params ) )
         {
@@ -484,17 +508,15 @@ class Inkscape
             }
         }
 
-        $result = shell_exec( $exec . ' '. $extraParam );
+        $this->lastCmd = $exec . ' '. $extraParam;
+        $this->lastExecuteResult = shell_exec( $this->lastCmd );
 
-        //used in functions that return boolean
-        $this->lastExecuteResult = $result;
-
-        if ( trim( $result ) == 'Nothing to do!' )
+        if ( trim( $this->lastExecuteResult ) == 'Nothing to do!' )
         {
             throw new Exception( 'Nothing to do!' );
         }
 
-        return $result;
+        return $this->lastExecuteResult ;
     }
 }
 ?>

@@ -32,7 +32,7 @@ $svg = SVGDocument::getInstance( 'resource/image.svg' );
 //convert the image to SVGImage object
 $embed= $svg->getElementById('stickEmbed');
 //convert the element to an image
-$image = new SVGImage( $embed->asXML() ) ;
+$image = @new SVGImage( $embed->asXML() ) ;
 //export the image to a file, if is png
 if ( $image->getImageData()->mime == 'image/png' )
 {

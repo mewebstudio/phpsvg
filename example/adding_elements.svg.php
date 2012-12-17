@@ -82,14 +82,24 @@ $svg->addShape( SVGText::getInstance( 22, 50, 'myText', 'This is a text', $style
 $svg->addShape( SVGLine::getInstance( 50, 50, 500, 500 ,null, $style ) );
 
 #many types of output
-$svg->asXML('output/output.svg'); #svg
-$svg->export('/tmp/output.png'); #png
-$svg->export('output/output.jpg'); #jpg
-$svg->export('output/output.gif'); #gif
-$svg->export('output/thumb16x16.png',16,16,true); #png resized using imagemagick
-$svg->export('output/thumb32x32.png',32,32,true);
-$svg->export('output/thumb64x64.png',64,64,true);
+try
+{
+    $svg->asXML( getcwd() .'/output/output.svg'); #svg
+    define('INKSCAPE_PATH', 'H:\ferramentas\Inkscape\inkscape' );
+    $svg->export( getcwd() . '/output/inkscape.png', null, null, true, SVGDocument::EXPORT_TYPE_INKSCAPE );
+    $svg->export( getcwd() .'/output/output.png'); #png
+    //$svg->export( getcwd() .'/output/output.jpg'); #jpg
+    //$svg->export( getcwd() . '/output/output.gif'); #gif
+    $svg->export( getcwd() . '/output/thumb16x16.png',16,16,true); #png resized using imagemagick
+    $svg->export( getcwd() . '/output/thumb32x32.png',32,32,true);
+    $svg->export( getcwd() . '/output/thumb64x64.png',64,64,true);
+    
+    #output to browser, with header
+    $svg->output();
+}
+catch ( Exception $e )
+{
+    echo $e->getMessage() . ' on ' .$e->getFile() .' line ' .$e->getLine();
+}
 
-#output to browser, with header
-$svg->output();
 ?>

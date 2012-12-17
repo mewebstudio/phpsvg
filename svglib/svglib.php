@@ -1,13 +1,20 @@
 <?php
 /**
  *
- * Description: Implementation SVGDocument inlude all other libs
+ * Description: Implementation SVGDocument include in all other libs
+ * 
+ * Class pre-requisites:
+ * - SimpleXmlElement - http://php.net/manual/en/class.simplexmlelement.php
+ * - gzip support (for compressed svg) - http://php.net/manual/en/book.zlib.php
+ * - imagemagick to export to png - http://php.net/manual/en/book.imagick.php
+ * - GD to use embed image - http://php.net/manual/pt_BR/book.image.php
  *
- *
+ * @link phpsvg.nostaljia.eng.br
  * @link http://trialforce.nostaljia.eng.br
  * @link http://www.w3.org/TR/SVG/
  *
  * Started at Mar 11, 2010
+ * Current version 0.8 01/01/2013
  *
  * @author Eduardo Bonfandini
  *
@@ -29,28 +36,25 @@
  *----------------------------------------------------------------------
  */
 
-include_once('xmlelement.php'); //extends SimpleXmlElement
-include_once('svgstyle.php'); //generic shape
-include_once('svgshape.php'); //generic shape
-include_once('svgshapeex.php'); //extended shape
-include_once('svgpath.php'); //path object
-include_once('svgline.php'); //line object
-include_once('svgrect.php'); //rect object
-include_once('svgcircle.php'); //circle object
-include_once('svgellipse.php'); //ellipse object
-include_once('svgtext.php'); //text object
-include_once('svgimage.php'); //image object suports embed image
-include_once('svglineargradient.php'); //gradient 
-include_once('svgradialgradient.php'); //gradient
-include_once('svgstop.php'); //one color/stop of
+//include all clsses neede by lib
+include('xmlelement.php'); //extends SimpleXmlElement
+include('svgstyle.php'); //generic shape
+include('svgshape.php'); //generic shape
+include('svgshapeex.php'); //extended shape
+include('svgpath.php'); //path object
+include('svgline.php'); //line object
+include('svgrect.php'); //rect object
+include('svgcircle.php'); //circle object
+include('svgellipse.php'); //ellipse object
+include('svgtext.php'); //text object
+include('svgimage.php'); //image object suports embed image
+include('svglineargradient.php'); //gradient 
+include('svgradialgradient.php'); //gradient
+include('svgstop.php'); //one color/stop of
 
 /**
  *
- * Needed to use:
- * SimpleXmlElement
- * gzip support (for compressed svg)
- * imagemagick to export to png
- * GD to use embed image
+
  *
  * Reference site:
  * http://www.leftontheweb.com/message/A_small_SimpleXML_gotcha_with_namespaces
@@ -64,7 +68,9 @@ class SVGDocument extends XMLElement
     const EXTENSION = 'svg';
     const EXTENSION_COMPACT = 'svgz';
     const HEADER = 'image/svg+xml';
-
+    
+    const EXPORT_TYPE_IMAGE_MAGIC = 'imagick';
+    const EXPORT_TYPE_INKSCAPE = 'inkscape';
 
     /**
      * Return the extension of a filename
@@ -157,7 +163,7 @@ class SVGDocument extends XMLElement
      * @param string $filename the file to save, is optional, you can output to a var
      * @return string the xml string if filename is not passed
      */
-    public function asXML( $filename = null )
+    public function asXML( $filename = null, $humanReadable = true )
     {
         //if is svgz use compres.zlib to load the compacted SVG
         if ( SVGDocument::getFileExtension( $filename ) == self::EXTENSION_COMPACT )
@@ -166,13 +172,12 @@ class SVGDocument extends XMLElement
             if ( ! function_exists( 'gzopen' ) )
             {
                 throw new Exception('GZip support not installed.');
-                return false;
             }
 
             $filename = 'compress.zlib://'.$filename;
         }
 
-        $xml = parent::asXML();
+        $xml = parent::asXML( null, $humanReadable );
 
         //need to do it, if pass a null filename it return an error
         if ( $filename )
@@ -181,36 +186,6 @@ class SVGDocument extends XMLElement
         }
 
         return $xml;
-    }
-
-    /**
-     * Export to a image file, consider file extension
-     * Uses imageMagick
-     *
-     * @param string $filename
-     * @param integer $width the width of exported image
-     * @param integer $height the height of exported image
-     * @param boolean $respectRatio respect the ratio, image proportion
-     */
-    public function export($filename, $width=null, $height=null, $respectRatio = false )
-    {
-        $image = new Imagick();
-
-        $ok = $image->readImageBlob( $this->asXML() );
-
-        if ( $ok )
-        {
-            if ( $width && $height )
-            {
-                $image->thumbnailImage( $width, $height, $respectRatio );
-            }
-
-            $image->writeImage( $filename );
-
-            $ok = true;
-        }
-
-        return $ok;
     }
 
     /**
@@ -324,6 +299,121 @@ class SVGDocument extends XMLElement
     public function getDefs()
     {
         return $this->defs;
+    }
+    
+    /**
+     * Export to a image file, consider file extension
+     * Uses imageMagick or inkcape. If one fail try other.
+     * 
+     * Try to define the complete path of files, works better for exportation.
+          *
+     * @param string $filename
+     * @param integer $width the width of exported image
+     * @param integer $height the height of exported image
+     * @param boolean $respectRatio respect the ratio, image proportion
+     * @param string $exportType the default export type
+     */
+    public function export( $filename, $width=null, $height=null, $respectRatio = false , $exportType = SVGDocument::EXPORT_TYPE_IMAGE_MAGIC )
+    {
+        if ( $exportType == SVGDocument::EXPORT_TYPE_IMAGE_MAGIC )
+        {
+            try
+            {
+                return $this->exportImagick($filename, $width, $height, $respectRatio);
+            }
+            catch ( Exception $e )
+            {
+                try
+                {
+                    return $this->exportInkscape($filename, $width, $height);
+                }
+                catch ( Exception $exc )
+                {
+                    $exc = null;
+                    throw $e; //throw the first error
+                }
+            }
+        }
+        else
+        {
+            try
+            {
+                return $this->exportInkscape($filename, $width, $height);
+            }
+            catch ( Exception $e )
+            {
+                try
+                {
+                    return $this->exportImagick($filename, $width, $height, $respectRatio);
+                }
+                catch ( Exception $exc )
+                {
+                    $exc = null;
+                    throw $e; //throw the original error
+                }
+            }
+        }
+    }
+
+    /**
+     * Export as SVG to image document using inkscape.
+     * 
+     * It will save a temporary file on default system tempo folder.
+     * 
+     * @param string $filename try to use complete path. Works better.
+     * @param integer $width
+     * @param integer $height
+     * 
+     * @return boolean ?
+     */
+    protected function exportInkscape($filename, $width=null, $height=null )
+    {
+        include_once 'inkscape.php'; //support export using inkscape
+        
+        $format = SVGDocument::getFileExtension($filename);
+        $tmpFileName = sys_get_temp_dir().'tmp.svg';
+        
+        file_put_contents( $tmpFileName , $this->asXML() );
+        
+        $inkscape = new Inkscape( $tmpFileName );
+        $inkscape->setSize( $width, $height );
+        
+        return $inkscape->export( $format, $filename );
+    }
+    
+    /**
+     * Export to a image file, consider file extension
+     * Uses imageMagick
+     *
+     * @param string $filename
+     * @param integer $width the width of exported image
+     * @param integer $height the height of exported image
+     * @param boolean $respectRatio respect the ratio, image proportion
+     */
+    public function exportImagick($filename, $width=null, $height=null, $respectRatio = false )
+    {
+        if ( !class_exists( 'Imagick' ) )
+        {
+            throw new Exception( 'Imagemagick class not found. Please install it.' );
+        }
+        
+        $image = new Imagick();
+
+        $ok = $image->readImageBlob( $this->asXML() );
+
+        if ( $ok )
+        {
+            if ( $width && $height )
+            {
+                $image->thumbnailImage( $width, $height, $respectRatio );
+            }
+
+            $image->writeImage( $filename );
+
+            $ok = true;
+        }
+
+        return $ok;
     }
 }
 ?>

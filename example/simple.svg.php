@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Description: Inkscape exportation example
+ * Description: Very simple example
  *
  * Blog: http://trialforce.nostaljia.eng.br
  *
@@ -26,24 +26,10 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-
-#if inkscape is not in default system path you must define it's path
-define('INKSCAPE_PATH', 'H:\ferramentas\Inkscape\inkscape' );
-require_once '../svglib/inkscape.php';
-$inkscape = new Inkscape( getcwd() . '/resource/apple.svg' );
-echo '<pre>';
-echo "Testing inkscape...". PHP_EOL;
-echo 'Version:'. PHP_EOL.$inkscape->getVersion().PHP_EOL;
-echo 'Help:'.PHP_EOL.$inkscape->getHelp().PHP_EOL;
-echo 'Usage:'.PHP_EOL.$inkscape->getUsage().PHP_EOL;
-$inkscape->exportAreaSnap(); //better pixel art
-$inkscape->exportTextToPath();
-$ok = $inkscape->export( 'png', getcwd() . '/output/apple.png' );
-
-if ($ok)
-{
-    echo 'Export sucess to output/apple.png!';
-}
-
-echo '</pre>';
+require_once "../svglib/svglib.php";
+$svg = SVGDocument::getInstance( ); #start a svgDocument using default (minimal) svg document
+$svg->setTitle("Simple example"); #define the title
+$rect = SVGRect::getInstance( 0, 5, 'myRect', 228, 185, new SVGStyle( array('fill'=>'blue', 'stroke' =>'gray' ) ) ); #create a new rect with, x and y position, id, width and heigth, and the style
+$svg->addShape( $rect ); #add the rect to svg
+$svg->output(); #output to browser, with header
 ?>

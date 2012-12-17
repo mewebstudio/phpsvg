@@ -426,7 +426,7 @@ class XmlElement extends SimpleXMLElement
         return $formatted; // pretty format
     }
     
-    public function asXML( $filename = null )
+    public function asXML( $filename = null , $humanReadable = true )
     {
         if ( $filename )
         {
@@ -434,7 +434,15 @@ class XmlElement extends SimpleXMLElement
         }
         else
         {
-            return $this->prettyXML( parent::asXML() );
+            //define if xml is humanReadable or not
+            if ( $humanReadable )
+            {
+                return $this->prettyXML( parent::asXML() );
+            }
+            else
+            {
+                return parent::asXML();
+            }
         }
     }
 
