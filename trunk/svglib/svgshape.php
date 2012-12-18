@@ -98,6 +98,26 @@ class SVGShape extends XMLElement
     {
         return new SVGStyle( $this->getAttribute( 'style') );
     }
+    
+    /**
+     * Show element
+     */
+    public function show()
+    {
+        $style = $this->getStyle();
+        $style->show();
+        $this->setStyle($style);
+    }
+    
+    /**
+     * Hide the element
+     */
+    public function hide()
+    {
+        $style = $this->getStyle();
+        $style->hide();
+        $this->setStyle($style);
+    }
 
     /**
      * Return the string with the transformation of shape

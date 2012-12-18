@@ -36,6 +36,7 @@ class SVGStyle
     public $strokeWidth;
     public $stopColor;
     public $stopOpacity;
+    public $display;
     
     /**
      * Construct the style
@@ -94,6 +95,41 @@ class SVGStyle
         }
 
         return $result;
+    }
+    
+    /**
+     * Define the display of elemet
+     * 
+     * @param string $display
+     */
+    public function setDisplay($display)
+    {
+        $this->display = $display;
+    }
+    
+    /**
+     * Return the display of element
+     * @return string
+     */
+    public function getDisplay()
+    {
+        return $this->display;
+    }
+    
+    /**
+     * Show the element
+     */
+    public function show()
+    {
+        $this->display = 'inline';
+    }
+    
+    /**
+     * Hide the element
+     */
+    public function hide()
+    {
+        $this->display = 'none';
     }
 
     /**
