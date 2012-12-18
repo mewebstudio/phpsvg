@@ -18,7 +18,7 @@
  *
  * @author Eduardo Bonfandini
  *
- *-----------------------------------------------------------------------
+ * -----------------------------------------------------------------------
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as published
  *   by the Free Software Foundation; either version 3 of the License, or
@@ -33,9 +33,8 @@
  *   License along with this program; if not, access
  *   http://www.fsf.org/licensing/licenses/lgpl.html or write to the
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *----------------------------------------------------------------------
+ * ----------------------------------------------------------------------
  */
-
 //include all clsses neede by lib
 include('xmlelement.php'); //extends SimpleXmlElement
 include('svgstyle.php'); //generic shape
@@ -51,7 +50,6 @@ include('svgimage.php'); //image object suports embed image
 include('svglineargradient.php'); //gradient 
 include('svgradialgradient.php'); //gradient
 include('svgstop.php'); //one color/stop of
-
 /**
  *
 
@@ -61,14 +59,13 @@ include('svgstop.php'); //one color/stop of
  * http://blog.jondh.me.uk/2010/10/resetting-namespaced-attributes-using-simplexml/
  * http://www.w3.org/TR/SVG/
  */
-class SVGDocument extends XMLElement
+class SVGDocument extends SVGShape
 {
     const VERSION = '1.1';
     const XMLNS = 'http://www.w3.org/2000/svg';
     const EXTENSION = 'svg';
     const EXTENSION_COMPACT = 'svgz';
     const HEADER = 'image/svg+xml';
-    
     const EXPORT_TYPE_IMAGE_MAGIC = 'imagick';
     const EXPORT_TYPE_INKSCAPE = 'inkscape';
 
@@ -78,10 +75,10 @@ class SVGDocument extends XMLElement
      * @param string $filename the filename to get the extension
      * @return string the filename to get the extension
      */
-    protected static function getFileExtension($filename)
+    protected static function getFileExtension( $filename )
     {
-        $explode = explode('.', $filename);
-        return strtolower( $explode[ count( $explode ) -1 ]  );
+        $explode = explode( '.', $filename );
+        return strtolower( $explode[count( $explode ) - 1] );
     }
 
     /**
@@ -96,35 +93,35 @@ class SVGDocument extends XMLElement
      *
      * @return SVGDocument
      */
-    public static function getInstance( $filename = null , $SVGClass = 'SVGDocument')
+    public static function getInstance( $filename = null, $SVGClass = 'SVGDocument' )
     {
         if ( !$SVGClass )
         {
             $SVGClass = 'SVGDocument';
         }
-        
+
         if ( $filename )
         {
             //if is svgz use compres.zlib to load the compacted SVG
             if ( SVGDocument::getFileExtension( $filename ) == self::EXTENSION_COMPACT )
             {
                 //verify if zlib is installed
-                if ( ! function_exists( 'gzopen' ) )
+                if ( !function_exists( 'gzopen' ) )
                 {
-                    throw new Exception('GZip support not installed.');
+                    throw new Exception( 'GZip support not installed.' );
                     return false;
                 }
 
-                $filename = 'compress.zlib://'.$filename;
+                $filename = 'compress.zlib://' . $filename;
             }
 
             //get the content
-            $content = file_get_contents($filename);
+            $content = file_get_contents( $filename );
 
             //throw error if not found
-            if ( !$content)
+            if ( !$content )
             {
-                throw new Exception( 'Impossible to load content of file '. $filename);
+                throw new Exception( 'Impossible to load content of file ' . $filename );
             }
 
             $svg = new $SVGClass( $content );
@@ -138,7 +135,7 @@ class SVGDocument extends XMLElement
             $svg->setWidth( '210mm' );
             $svg->setHeight( '297mm' );
             $svg->setVersion( self::VERSION );
-            $svg->setAttribute('xmlns', self::XMLNS );
+            $svg->setAttribute( 'xmlns', self::XMLNS );
         }
 
         return $svg;
@@ -151,7 +148,7 @@ class SVGDocument extends XMLElement
      */
     public function output()
     {
-        header( 'Content-type: '.self::HEADER );
+        header( 'Content-type: ' . self::HEADER );
         echo $this->asXML();
     }
 
@@ -169,12 +166,12 @@ class SVGDocument extends XMLElement
         if ( SVGDocument::getFileExtension( $filename ) == self::EXTENSION_COMPACT )
         {
             //verify if zlib is installed
-            if ( ! function_exists( 'gzopen' ) )
+            if ( !function_exists( 'gzopen' ) )
             {
-                throw new Exception('GZip support not installed.');
+                throw new Exception( 'GZip support not installed.' );
             }
 
-            $filename = 'compress.zlib://'.$filename;
+            $filename = 'compress.zlib://' . $filename;
         }
 
         $xml = parent::asXML( null, $humanReadable );
@@ -182,7 +179,7 @@ class SVGDocument extends XMLElement
         //need to do it, if pass a null filename it return an error
         if ( $filename )
         {
-            return file_put_contents( $filename , $xml );
+            return file_put_contents( $filename, $xml );
         }
 
         return $xml;
@@ -195,9 +192,9 @@ class SVGDocument extends XMLElement
      */
     public function setVersion( $version )
     {
-        $this->setAttribute('version', $version);
+        $this->setAttribute( 'version', $version );
     }
-    
+
     /**
      * Get the version of SVG document
      *
@@ -205,7 +202,7 @@ class SVGDocument extends XMLElement
      */
     public function getVersion()
     {
-        return $this->getAttribute('version');
+        return $this->getAttribute( 'version' );
     }
 
     /**
@@ -218,7 +215,7 @@ class SVGDocument extends XMLElement
      */
     public function setWidth( $width )
     {
-        $this->setAttribute('width', $width);
+        $this->setAttribute( 'width', $width );
     }
 
     /**
@@ -226,9 +223,9 @@ class SVGDocument extends XMLElement
      *
      * @return string the width of page
      */
-    public function getWidth( )
+    public function getWidth()
     {
-        return $this->getAttribute('width');
+        return $this->getAttribute( 'width' );
     }
 
     /**
@@ -241,7 +238,7 @@ class SVGDocument extends XMLElement
      */
     public function setHeight( $height )
     {
-        $this->setAttribute('height', $height);
+        $this->setAttribute( 'height', $height );
     }
 
     /**
@@ -249,9 +246,9 @@ class SVGDocument extends XMLElement
      *
      * @return string the height of page
      */
-    public function getHeight( )
+    public function getHeight()
     {
-        return $this->getAttribute('height');
+        return $this->getAttribute( 'height' );
     }
 
     /**
@@ -273,13 +270,13 @@ class SVGDocument extends XMLElement
     {
         if ( !$this->defs )
         {
-            $defs = new XMLElement('<defs></defs>');
+            $defs = new XMLElement( '<defs></defs>' );
             $this->append( $defs );
         }
-        
+
         $this->defs->append( $element );
     }
-    
+
     /**
      * Add some script content to svg
      * 
@@ -287,7 +284,7 @@ class SVGDocument extends XMLElement
      */
     public function addScript( $script )
     {
-        $element = new XMLElement('<script>'.$script.'</script>');
+        $element = new XMLElement( '<script>' . $script . '</script>' );
         $this->append( $element );
     }
 
@@ -300,32 +297,32 @@ class SVGDocument extends XMLElement
     {
         return $this->defs;
     }
-    
+
     /**
      * Export to a image file, consider file extension
      * Uses imageMagick or inkcape. If one fail try other.
      * 
      * Try to define the complete path of files, works better for exportation.
-          *
+     *
      * @param string $filename
      * @param integer $width the width of exported image
      * @param integer $height the height of exported image
      * @param boolean $respectRatio respect the ratio, image proportion
      * @param string $exportType the default export type
      */
-    public function export( $filename, $width=null, $height=null, $respectRatio = false , $exportType = SVGDocument::EXPORT_TYPE_IMAGE_MAGIC )
+    public function export( $filename, $width = null, $height = null, $respectRatio = false, $exportType = SVGDocument::EXPORT_TYPE_IMAGE_MAGIC )
     {
         if ( $exportType == SVGDocument::EXPORT_TYPE_IMAGE_MAGIC )
         {
             try
             {
-                return $this->exportImagick($filename, $width, $height, $respectRatio);
+                return $this->exportImagick( $filename, $width, $height, $respectRatio );
             }
             catch ( Exception $e )
             {
                 try
                 {
-                    return $this->exportInkscape($filename, $width, $height);
+                    return $this->exportInkscape( $filename, $width, $height );
                 }
                 catch ( Exception $exc )
                 {
@@ -338,13 +335,13 @@ class SVGDocument extends XMLElement
         {
             try
             {
-                return $this->exportInkscape($filename, $width, $height);
+                return $this->exportInkscape( $filename, $width, $height );
             }
             catch ( Exception $e )
             {
                 try
                 {
-                    return $this->exportImagick($filename, $width, $height, $respectRatio);
+                    return $this->exportImagick( $filename, $width, $height, $respectRatio );
                 }
                 catch ( Exception $exc )
                 {
@@ -366,21 +363,17 @@ class SVGDocument extends XMLElement
      * 
      * @return boolean ?
      */
-    protected function exportInkscape($filename, $width=null, $height=null )
+    public function exportInkscape( $filename, $width = null, $height = null )
     {
         include_once 'inkscape.php'; //support export using inkscape
-        
-        $format = SVGDocument::getFileExtension($filename);
-        $tmpFileName = sys_get_temp_dir().'tmp.svg';
-        
-        file_put_contents( $tmpFileName , $this->asXML() );
-        
-        $inkscape = new Inkscape( $tmpFileName );
+
+        $format = SVGDocument::getFileExtension( $filename );
+        $inkscape = new Inkscape( $this );
         $inkscape->setSize( $width, $height );
-        
+
         return $inkscape->export( $format, $filename );
     }
-    
+
     /**
      * Export to a image file, consider file extension
      * Uses imageMagick
@@ -390,13 +383,13 @@ class SVGDocument extends XMLElement
      * @param integer $height the height of exported image
      * @param boolean $respectRatio respect the ratio, image proportion
      */
-    public function exportImagick($filename, $width=null, $height=null, $respectRatio = false )
+    public function exportImagick( $filename, $width = null, $height = null, $respectRatio = false )
     {
         if ( !class_exists( 'Imagick' ) )
         {
             throw new Exception( 'Imagemagick class not found. Please install it.' );
         }
-        
+
         $image = new Imagick();
 
         $ok = $image->readImageBlob( $this->asXML() );

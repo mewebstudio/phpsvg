@@ -210,7 +210,7 @@ class XmlElement extends SimpleXMLElement
         {
             if ( count( $this->children() )  > 0 )
             {
-                foreach ( $this->children() as $line => $child )
+                foreach ( $this->children() as $child )
                 {
                     $element = $child->getElementByAttribute( $attribute, $value );
 
