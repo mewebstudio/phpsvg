@@ -445,7 +445,23 @@ class XmlElement extends SimpleXMLElement
             }
         }
     }
-
+    
+    /**
+     * Remove an element by it's id.
+     * 
+     * @param string $id
+     */
+    public function removeElementById( $id )
+    {
+        $this->removeElement( $this->getElementById( $id ) );
+    }
+    
+    public function removeElement( $node )
+    {
+        $dom = dom_import_simplexml($node);
+        $dom->parentNode->removeChild($dom);
+    }
+    
     /**
      * Magic toString function.
      *
