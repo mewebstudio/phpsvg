@@ -1,5 +1,5 @@
-VERSION 0.8 - Jan 1 2012
-- Better documentation
+VERSION 0.8 - Sep 12 2013
+- Better code documentation
 - Better error control
 - Support for export images using Inkscape it's add exporting formats to png,ps,eps,pdf,plain-svg. Support windows Inkscape.
 - Add inkscape as a fallback when imagemagic is not present. Each one will try to use other if fail.
@@ -8,6 +8,9 @@ VERSION 0.8 - Jan 1 2012
 - Removed some warnings and notices.
 - Show and hide functions.
 - Remove Element function.
+- Support PHP 5.4 and PHP Strict mode.
+- Added simple pixel art to vector example.
+- Corrected the SVGText bug reported by users.
 
 VERSION 0.7 - Nov 16 2011
 - Added support for line

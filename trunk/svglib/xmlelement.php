@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Description: Extends SimpleXMlElement funcionalities
@@ -11,7 +12,7 @@
  *
  * @author Eduardo Bonfandini
  *
- *-----------------------------------------------------------------------
+ * -----------------------------------------------------------------------
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as published
  *   by the Free Software Foundation; either version 3 of the License, or
@@ -26,22 +27,24 @@
  *   License along with this program; if not, access
  *   http://www.fsf.org/licensing/licenses/lgpl.html or write to the
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *----------------------------------------------------------------------
+ * ----------------------------------------------------------------------
  */
 class XmlElement extends SimpleXMLElement
 {
+
     /**
      * Value used to control last used id
-     * 
+     *
      * @var integer
      */
-    protected static $uniqueId = 0 ;
+    protected static $uniqueId = 0;
+
     /**
      * Define if is to generate identificator automagic
-     * 
+     *
      * @var boolean if is to generate identificator automagic
      */
-    public static $useAutoId = true ;
+    public static $useAutoId = true;
 
     /**
      * Remove a attribute
@@ -63,10 +66,10 @@ class XmlElement extends SimpleXMLElement
      *
      * @example  $this->addAttribute("xlink:href", $filename, 'http://www.w3.org/1999/xlink');
      */
-    public function setAttribute( $attribute , $value , $namespace = null )
+    public function setAttribute( $attribute, $value, $namespace = null )
     {
         $this->removeAttribute( $attribute );
-        $this->addAttribute( $attribute, $value , $namespace );
+        $this->addAttribute( $attribute, $value, $namespace );
     }
 
     /**
@@ -82,21 +85,21 @@ class XmlElement extends SimpleXMLElement
 
         if ( count( $explode ) > 1 )
         {
-            $attributes = $this->attributes( $explode[0], true);
+            $attributes = $this->attributes( $explode[ 0 ], true );
 
             //if the attribute exits with namespace return it
-            if ( $attributes[ $explode[1] ] )
+            if ( $attributes[ $explode[ 1 ] ] )
             {
-                return $attributes[ $explode[1] ];
+                return $attributes[ $explode[ 1 ] ];
             }
             else
             {
                 //otherwize will return the attribute without namespaces
-                $attribute = $explode[1];
+                $attribute = $explode[ 1 ];
             }
         }
 
-        return $this->attributes()->$attribute.'';
+        return $this->attributes()->$attribute . '';
     }
 
     /**
@@ -110,8 +113,8 @@ class XmlElement extends SimpleXMLElement
         {
             $id = $id ? $id : $this->getUniqueId();
         }
-        
-        $this->setAttribute('id', $id );
+
+        $this->setAttribute( 'id', $id );
     }
 
     /**
@@ -121,7 +124,7 @@ class XmlElement extends SimpleXMLElement
      */
     public function getId()
     {
-        return $this->getAttribute('id');
+        return $this->getAttribute( 'id' );
     }
 
     /**
@@ -148,7 +151,7 @@ class XmlElement extends SimpleXMLElement
             $namespaces = $append->getNameSpaces();
 
             //get all childs
-            if ( strlen( trim( (string) $append) ) == 0 )
+            if ( strlen( trim( ( string ) $append ) ) == 0 )
             {
                 $xml = $this->addChild( $append->getName() );
 
@@ -160,7 +163,7 @@ class XmlElement extends SimpleXMLElement
             else
             {
                 //add one child
-                $xml = $this->addChild( $append->getName(), (string) $append );
+                $xml = $this->addChild( $append->getName(), ( string ) $append );
             }
 
             //add simple attributes
@@ -170,11 +173,11 @@ class XmlElement extends SimpleXMLElement
             }
 
             //add attributes with namespace example xlink:href
-            foreach ( $namespaces  as $index => $namespace )
+            foreach ( $namespaces as $index => $namespace )
             {
                 foreach ( $append->attributes( $namespace ) as $attribute => $value )
                 {
-                    $xml->addAttribute( $index.':'.$attribute, $value, $namespace );
+                    $xml->addAttribute( $index . ':' . $attribute, $value, $namespace );
                 }
             }
         }
@@ -189,7 +192,7 @@ class XmlElement extends SimpleXMLElement
      */
     public function getElementById( $id )
     {
-        return $this->getElementByAttribute('id', $id );
+        return $this->getElementByAttribute( 'id', $id );
     }
 
     /**
@@ -208,7 +211,7 @@ class XmlElement extends SimpleXMLElement
         }
         else
         {
-            if ( count( $this->children() )  > 0 )
+            if ( count( $this->children() ) > 0 )
             {
                 foreach ( $this->children() as $child )
                 {
@@ -234,61 +237,61 @@ class XmlElement extends SimpleXMLElement
      * @param string $condition possible values ==, != , >, >=, <, <=
      * @return array array of XmlElement
      */
-    public function getElementsByAttribute( $attribute, $value , $condition = '==')
+    public function getElementsByAttribute( $attribute, $value, $condition = '==' )
     {
-        $result = array();
+        $result = array( );
 
         if ( $condition == '==' )
         {
             //treat the empty condition
-            if ( $value  == '' )
+            if ( $value == '' )
             {
-                if ( ! $this->getAttribute( $attribute ) )
+                if ( !$this->getAttribute( $attribute ) )
                 {
-                    $result[] = $this;
+                    $result[ ] = $this;
                 }
             }
 
             if ( $this->getAttribute( $attribute ) == $value )
             {
-                $result[] = $this;
+                $result[ ] = $this;
             }
         }
         else if ( $condition == '!=' )
         {
             if ( $this->getAttribute( $attribute ) != $value )
             {
-                $result[] = $this;
+                $result[ ] = $this;
             }
         }
         else if ( $condition == '>' )
         {
             if ( $this->getAttribute( $attribute ) > $value )
             {
-                $result[] = $this;
+                $result[ ] = $this;
             }
         }
         else if ( $condition == '>=' )
         {
             if ( $this->getAttribute( $attribute ) >= $value )
             {
-                $result[] = $this;
+                $result[ ] = $this;
             }
         }
         else if ( $condition == '<' )
         {
             if ( $this->getAttribute( $attribute ) < $value )
             {
-                $result[] = $this;
+                $result[ ] = $this;
             }
         }
         else if ( $condition == '<=' )
         {
             if ( $this->getAttribute( $attribute ) <= $value )
             {
-                $result[] = $this;
+                $result[ ] = $this;
             }
-        }        
+        }
         else
         {
             if ( $this->count() > 0 )
@@ -299,7 +302,7 @@ class XmlElement extends SimpleXMLElement
 
                     if ( $element )
                     {
-                        $result[] = $element;
+                        $result[ ] = $element;
                     }
                 }
             }
@@ -307,67 +310,67 @@ class XmlElement extends SimpleXMLElement
 
         return $result;
     }
-    
+
     /**
      * Define the title of the shape
-     * 
+     *
      * The first title element will be considered as document title.
-     * 
+     *
      * Is defined as alternative text in browser.
-     * 
-     * @param string $title 
+     *
+     * @param string $title
      */
     public function setTitle( $title )
     {
         if ( !$this->title )
         {
-            $this->addChild( 'title' , $title );
+            $this->addChild( 'title', $title );
         }
         else
         {
             $this->title = $title;
         }
     }
-    
+
     /**
      * Return the title of element
-     * 
+     *
      * @return string the title of element
      */
     public function getTitle()
     {
         return $this->title;
     }
-    
+
     /**
      * Define the description of the element
-     * @param string $desc 
+     * @param string $desc
      */
     public function setDescription( $desc )
     {
         if ( !$this->desc )
         {
-            $this->addChild( 'desc' , $desc );
+            $this->addChild( 'desc', $desc );
         }
         else
         {
             $this->desc = $desc;
         }
     }
-    
+
     /**
      * Return the description of element
-     * 
+     *
      * @return string the description of element
      */
     public function getDescription()
     {
         return $this->desc;
     }
-    
+
     /**
      * Returns s formated xml
-     * 
+     *
      * @param   string $xml the xml text to format
      * @param   boolean $debug set to get debug-prints of RegExp matches
      * @returns string formatted XML
@@ -376,57 +379,61 @@ class XmlElement extends SimpleXMLElement
      * @link http://forums.devnetwork.net/viewtopic.php?p=213989
      * @link http://recursive-design.com/blog/2007/04/05/format-xml-with-php/
      */
-    protected function prettyXML($xml, $debug=false)
+    protected function prettyXML( $xml, $debug = false )
     {
         // add marker linefeeds to aid the pretty-tokeniser
         // adds a linefeed between all tag-end boundaries
-        $xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
+        $xml = preg_replace( '/(>)(<)(\/*)/', "$1\n$2$3", $xml );
 
         // now pretty it up (indent the tags)
-        $tok = strtok($xml, "\n");
+        $tok = strtok( $xml, "\n" );
         $formatted = ''; // holds pretty version as it is built
         $pad = 0; // initial indent
-        $matches = array(); // returns from preg_matches()
+        $matches = array( ); // returns from preg_matches()
 
         /*
          * pre- and post- adjustments to the padding indent are made, so changes can be applied to
-        * the current line or subsequent lines, or both
-        */
-        while($tok !== false)// scan each line and adjust indent based on opening/closing tags
+         * the current line or subsequent lines, or both
+         */
+        while ( $tok !== false )// scan each line and adjust indent based on opening/closing tags
         {
             // test for the various tag states
-            if (preg_match('/.+<\/\w[^>]*>$/', $tok, $matches))// open and closing tags on same line
+            if ( preg_match( '/.+<\/\w[^>]*>$/', $tok, $matches ) )// open and closing tags on same line
             {
-                if($debug) echo " =$tok= ";
-                $indent=0; // no change
+                if ( $debug )
+                    echo " =$tok= ";
+                $indent = 0; // no change
             }
-            else if (preg_match('/^<\/\w/', $tok, $matches)) // closing tag
+            else if ( preg_match( '/^<\/\w/', $tok, $matches ) ) // closing tag
             {
-                if($debug) echo " -$tok- ";
+                if ( $debug )
+                    echo " -$tok- ";
                 $pad--; //  outdent now
             }
-            else if (preg_match('/^<\w[^>]*[^\/]>.*$/', $tok, $matches))// opening tag
+            else if ( preg_match( '/^<\w[^>]*[^\/]>.*$/', $tok, $matches ) )// opening tag
             {
-                if($debug) echo " +$tok+ ";
-                $indent=1; // don't pad this one, only subsequent tags
+                if ( $debug )
+                    echo " +$tok+ ";
+                $indent = 1; // don't pad this one, only subsequent tags
             }
             else
             {
-                if($debug) echo " !$tok! ";
+                if ( $debug )
+                    echo " !$tok! ";
                 $indent = 0; // no indentation needed
             }
 
             // pad the line with the required number of leading spaces
-            $prettyLine = str_pad($tok, strlen($tok)+$pad, ' ', STR_PAD_LEFT);
+            $prettyLine = str_pad( $tok, strlen( $tok ) + $pad, ' ', STR_PAD_LEFT );
             $formatted .= $prettyLine . "\n"; // add to the cumulative result, with linefeed
-            $tok = strtok("\n"); // get the next token
+            $tok = strtok( "\n" ); // get the next token
             $pad += $indent; // update the pad size for subsequent lines
         }
 
         return $formatted; // pretty format
     }
-    
-    public function asXML( $filename = null , $humanReadable = true )
+
+    public function asXML( $filename = null, $humanReadable = true )
     {
         if ( $filename )
         {
@@ -445,108 +452,93 @@ class XmlElement extends SimpleXMLElement
             }
         }
     }
-    
+
     /**
      * Remove an element by it's id.
-     * 
+     *
      * @param string $id
      */
     public function removeElementById( $id )
     {
         $this->removeElement( $this->getElementById( $id ) );
     }
-    
+
     public function removeElement( $node )
     {
-        $dom = dom_import_simplexml($node);
-        $dom->parentNode->removeChild($dom);
+        $dom = dom_import_simplexml( $node );
+        $dom->parentNode->removeChild( $dom );
     }
-    
-    /**
-     * Magic toString function.
-     *
-     * @return string
-     *
-     */
-    public function __toString()
-    {
-        return $this->asXML();
-    }
+
 }
 
 #create the function if it not exists php < 5.3
-if ( !function_exists('mime_content_type') )
+if ( !function_exists( 'mime_content_type' ) )
 {
-    function mime_content_type($filename)
+
+    function mime_content_type( $filename )
     {
         //TODO need better list
         $mime_types = array(
-
-            'txt' => 'text/plain',
-            'htm' => 'text/html',
+            'txt'  => 'text/plain',
+            'htm'  => 'text/html',
             'html' => 'text/html',
-            'php' => 'text/html',
-            'css' => 'text/css',
-            'js' => 'application/javascript',
+            'php'  => 'text/html',
+            'css'  => 'text/css',
+            'js'   => 'application/javascript',
             'json' => 'application/json',
-            'xml' => 'application/xml',
-            'swf' => 'application/x-shockwave-flash',
-            'flv' => 'video/x-flv',
-
+            'xml'  => 'application/xml',
+            'swf'  => 'application/x-shockwave-flash',
+            'flv'  => 'video/x-flv',
             // images
-            'png' => 'image/png',
-            'jpe' => 'image/jpeg',
+            'png'  => 'image/png',
+            'jpe'  => 'image/jpeg',
             'jpeg' => 'image/jpeg',
-            'jpg' => 'image/jpeg',
-            'gif' => 'image/gif',
-            'bmp' => 'image/bmp',
-            'ico' => 'image/vnd.microsoft.icon',
+            'jpg'  => 'image/jpeg',
+            'gif'  => 'image/gif',
+            'bmp'  => 'image/bmp',
+            'ico'  => 'image/vnd.microsoft.icon',
             'tiff' => 'image/tiff',
-            'tif' => 'image/tiff',
-            'svg' => 'image/svg+xml',
+            'tif'  => 'image/tiff',
+            'svg'  => 'image/svg+xml',
             'svgz' => 'image/svg+xml',
-
             // archives
-            'zip' => 'application/zip',
-            'rar' => 'application/x-rar-compressed',
-            'exe' => 'application/x-msdownload',
-            'msi' => 'application/x-msdownload',
-            'cab' => 'application/vnd.ms-cab-compressed',
-
+            'zip'  => 'application/zip',
+            'rar'  => 'application/x-rar-compressed',
+            'exe'  => 'application/x-msdownload',
+            'msi'  => 'application/x-msdownload',
+            'cab'  => 'application/vnd.ms-cab-compressed',
             // audio/video
-            'mp3' => 'audio/mpeg',
-            'qt' => 'video/quicktime',
-            'mov' => 'video/quicktime',
-
+            'mp3'  => 'audio/mpeg',
+            'qt'   => 'video/quicktime',
+            'mov'  => 'video/quicktime',
             // adobe
-            'pdf' => 'application/pdf',
-            'psd' => 'image/vnd.adobe.photoshop',
-            'ai' => 'application/postscript',
-            'eps' => 'application/postscript',
-            'ps' => 'application/postscript',
-
+            'pdf'  => 'application/pdf',
+            'psd'  => 'image/vnd.adobe.photoshop',
+            'ai'   => 'application/postscript',
+            'eps'  => 'application/postscript',
+            'ps'   => 'application/postscript',
             // ms office
-            'doc' => 'application/msword',
-            'rtf' => 'application/rtf',
-            'xls' => 'application/vnd.ms-excel',
-            'ppt' => 'application/vnd.ms-powerpoint',
-
+            'doc'  => 'application/msword',
+            'rtf'  => 'application/rtf',
+            'xls'  => 'application/vnd.ms-excel',
+            'ppt'  => 'application/vnd.ms-powerpoint',
             // open office
-            'odt' => 'application/vnd.oasis.opendocument.text',
-            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+            'odt'  => 'application/vnd.oasis.opendocument.text',
+            'ods'  => 'application/vnd.oasis.opendocument.spreadsheet',
         );
 
-        $ext = strtolower(array_pop(explode('.',$filename)));
-        
-        if (array_key_exists($ext, $mime_types))
+        $ext = explode( '.', $filename );
+        $ext = strtolower( array_pop( $ext ) );
+
+        if ( array_key_exists( $ext, $mime_types ) )
         {
-            return $mime_types[$ext];
+            return $mime_types[ $ext ];
         }
-        elseif (function_exists('finfo_open'))
+        elseif ( function_exists( 'finfo_open' ) )
         {
-            $finfo = finfo_open(FILEINFO_MIME);
-            $mimetype = finfo_file($finfo, $filename);
-            finfo_close($finfo);
+            $finfo = finfo_open( FILEINFO_MIME );
+            $mimetype = finfo_file( $finfo, $filename );
+            finfo_close( $finfo );
             return $mimetype;
         }
         else
@@ -554,5 +546,6 @@ if ( !function_exists('mime_content_type') )
             return 'application/octet-stream';
         }
     }
+
 }
 ?>
