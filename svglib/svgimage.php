@@ -1,6 +1,7 @@
 <?php
+
 /**
- * 
+ *
  * Description: Image implementation
  *
  * Blog: http://trialforce.nostaljia.eng.br
@@ -9,7 +10,7 @@
  *
  * @author Eduardo Bonfandini
  *
- *-----------------------------------------------------------------------
+ * -----------------------------------------------------------------------
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as published
  *   by the Free Software Foundation; either version 3 of the License, or
@@ -24,18 +25,18 @@
  *   License along with this program; if not, access
  *   http://www.fsf.org/licensing/licenses/lgpl.html or write to the
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *----------------------------------------------------------------------
+ * ----------------------------------------------------------------------
  */
-
 class SVGImage extends SVGShapeEX
 {
+
     public static function getInstance( $x, $y, $id, $filename, $embed = true )
     {
-        $image = new SVGImage('<image></image>');
+        $image = new SVGImage( '<image></image>' );
 
         $image->setX( $x );
         $image->setY( $y );
-        $image->setId($id);
+        $image->setId( $id );
         $image->setImage( $filename, $embed );
 
         return $image;
@@ -71,16 +72,17 @@ class SVGImage extends SVGShapeEX
      */
     public function getImageData()
     {
-        $image = $this->getAttribute('xlink:href');
+        $image = $this->getAttribute( 'xlink:href' );
 
-        if (  stripos( $image,'data:' ) === 0 )
+        if ( stripos( $image, 'data:' ) === 0 )
         {
-            $explode = explode(',', $image);
-            $mime = explode( ';', $explode[0] );
+            $explode = explode( ',', $image );
+            $mime = explode( ';', $explode[ 0 ] );
 
-            $img->mime = str_replace( 'data:', '', $mime[0] );
-            $img->encode = $mime[1];
-            $img->binary = $explode[1];
+            $img = new stdClass();
+            $img->mime = str_replace( 'data:', '', $mime[ 0 ] );
+            $img->encode = $mime[ 1 ];
+            $img->binary = $explode[ 1 ];
 
             return $img;
         }
@@ -95,7 +97,7 @@ class SVGImage extends SVGShapeEX
      * @param string $filename
      * @param string $embed if is to embed or not
      */
-    public function setImage( $filename , $embed = true )
+    public function setImage( $filename, $embed = true )
     {
         if ( $embed )
         {
@@ -103,12 +105,14 @@ class SVGImage extends SVGShapeEX
             $imageSize = getimagesize( $filename, $imageSize );
             $mime = mime_content_type( $filename );
             $file = base64_encode( file_get_contents( $filename ) );
-            $filename = 'data:'.$mime.';base64,'.$file;
-            $this->setWidth( $imageSize[0] ); //define the size of image
-            $this->setHeight( $imageSize[1] );
+            $filename = 'data:' . $mime . ';base64,' . $file;
+            $this->setWidth( $imageSize[ 0 ] ); //define the size of image
+            $this->setHeight( $imageSize[ 1 ] );
         }
 
-        $this->addAttribute("xlink:href", $filename, 'http://www.w3.org/1999/xlink');
+        $this->addAttribute( "xlink:href", $filename, 'http://www.w3.org/1999/xlink' );
     }
+
 }
+
 ?>
