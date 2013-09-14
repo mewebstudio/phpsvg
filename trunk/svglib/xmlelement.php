@@ -153,7 +153,7 @@ class XmlElement extends SimpleXMLElement
             //get all childs
             if ( strlen( trim( ( string ) $append ) ) == 0 )
             {
-                $xml = $this->addChild( $append->getName() );
+                $xml = $this->addChild( $append->getName(), ' ' );
 
                 foreach ( $append->children() as $child )
                 {
@@ -163,7 +163,7 @@ class XmlElement extends SimpleXMLElement
             else
             {
                 //add one child
-                $xml = $this->addChild( $append->getName(), ( string ) $append );
+                $xml = $this->addChild( $append->getName(), ( string ) $append . ' ' );
             }
 
             //add simple attributes
@@ -379,7 +379,7 @@ class XmlElement extends SimpleXMLElement
      * @link http://forums.devnetwork.net/viewtopic.php?p=213989
      * @link http://recursive-design.com/blog/2007/04/05/format-xml-with-php/
      */
-    protected function prettyXML( $xml, $debug = false )
+    protected function prettyXML( $xml )
     {
         // add marker linefeeds to aid the pretty-tokeniser
         // adds a linefeed between all tag-end boundaries
@@ -400,26 +400,18 @@ class XmlElement extends SimpleXMLElement
             // test for the various tag states
             if ( preg_match( '/.+<\/\w[^>]*>$/', $tok, $matches ) )// open and closing tags on same line
             {
-                if ( $debug )
-                    echo " =$tok= ";
                 $indent = 0; // no change
             }
             else if ( preg_match( '/^<\/\w/', $tok, $matches ) ) // closing tag
             {
-                if ( $debug )
-                    echo " -$tok- ";
                 $pad--; //  outdent now
             }
             else if ( preg_match( '/^<\w[^>]*[^\/]>.*$/', $tok, $matches ) )// opening tag
             {
-                if ( $debug )
-                    echo " +$tok+ ";
                 $indent = 1; // don't pad this one, only subsequent tags
             }
             else
             {
-                if ( $debug )
-                    echo " !$tok! ";
                 $indent = 0; // no indentation needed
             }
 
