@@ -1,8 +1,9 @@
 <?php
+
 /**
  *
  * Description: Implementation SVGDocument include in all other libs
- * 
+ *
  * Class pre-requisites:
  * - SimpleXmlElement - http://php.net/manual/en/class.simplexmlelement.php
  * - gzip support (for compressed svg) - http://php.net/manual/en/book.zlib.php
@@ -35,7 +36,8 @@
  *   Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  * ----------------------------------------------------------------------
  */
-//include all clsses neede by lib
+//include all clsses needed by lib
+//TODO autoload
 include('xmlelement.php'); //extends SimpleXmlElement
 include('svgstyle.php'); //generic shape
 include('svgshape.php'); //generic shape
@@ -47,9 +49,11 @@ include('svgcircle.php'); //circle object
 include('svgellipse.php'); //ellipse object
 include('svgtext.php'); //text object
 include('svgimage.php'); //image object suports embed image
-include('svglineargradient.php'); //gradient 
+include('svglineargradient.php'); //gradient
 include('svgradialgradient.php'); //gradient
 include('svgstop.php'); //one color/stop of
+include('svggroup.php'); //group
+include('svgclippath.php'); //clippath
 /**
  *
 
@@ -59,8 +63,10 @@ include('svgstop.php'); //one color/stop of
  * http://blog.jondh.me.uk/2010/10/resetting-namespaced-attributes-using-simplexml/
  * http://www.w3.org/TR/SVG/
  */
+
 class SVGDocument extends SVGShape
 {
+
     const VERSION = '1.1';
     const XMLNS = 'http://www.w3.org/2000/svg';
     const EXTENSION = 'svg';
@@ -71,14 +77,14 @@ class SVGDocument extends SVGShape
 
     /**
      * Return the extension of a filename
-     * 
+     *
      * @param string $filename the filename to get the extension
      * @return string the filename to get the extension
      */
     protected static function getFileExtension( $filename )
     {
         $explode = explode( '.', $filename );
-        return strtolower( $explode[count( $explode ) - 1] );
+        return strtolower( $explode[ count( $explode ) - 1 ] );
     }
 
     /**
@@ -193,6 +199,8 @@ class SVGDocument extends SVGShape
     public function setVersion( $version )
     {
         $this->setAttribute( 'version', $version );
+
+        return $this;
     }
 
     /**
@@ -207,7 +215,7 @@ class SVGDocument extends SVGShape
 
     /**
      * Define the page dimension , width.
-     * 
+     *
      * @example setWidth('350px');
      * @example setWidth('350mm');
      *
@@ -216,6 +224,34 @@ class SVGDocument extends SVGShape
     public function setWidth( $width )
     {
         $this->setAttribute( 'width', $width );
+
+        return $this;
+    }
+
+    /**
+     * Set the view box attribute, used to make SVG resizable in browser.
+     *
+     * @param string $startX start x coordinate
+     * @param string $startY start y coordinate
+     * @param string $width width
+     * @param string $height height
+     */
+    public function setViewBox( $startX, $startY, $width, $height )
+    {
+        $viewBox = str_replace( array( '%', 'px' ), '', "$startX $startY $width $height" );
+        $this->setAttribute( 'viewBox', $viewBox );
+
+        return $this;
+    }
+
+    /**
+     * Set the default view box, based on width and height.
+     *
+     * Used to make SVG resizable in browser.
+     */
+    public function setDefaultViewBox()
+    {
+        return $this->setViewBox( 0, 0, $this->getWidth(), $this->getHeight() );
     }
 
     /**
@@ -232,13 +268,15 @@ class SVGDocument extends SVGShape
      * Define the height of page.
      *
      * @param string $height
-     * 
+     *
      * @example setHeight('350mm');
      * @example setHeight('350px');
      */
     public function setHeight( $height )
     {
         $this->setAttribute( 'height', $height );
+
+        return $this;
     }
 
     /**
@@ -259,12 +297,14 @@ class SVGDocument extends SVGShape
     public function addShape( $append )
     {
         $this->append( $append );
+
+        return $this;
     }
 
     /**
      * Add some element to defs, normally a gradient
-     * 
-     * @param XMLElement $element 
+     *
+     * @param XMLElement $element
      */
     public function addDefs( $element )
     {
@@ -279,13 +319,15 @@ class SVGDocument extends SVGShape
 
     /**
      * Add some script content to svg
-     * 
+     *
      * @param text $script
      */
     public function addScript( $script )
     {
         $element = new XMLElement( '<script>' . $script . '</script>' );
         $this->append( $element );
+
+        return $this;
     }
 
     /**
@@ -301,7 +343,7 @@ class SVGDocument extends SVGShape
     /**
      * Export to a image file, consider file extension
      * Uses imageMagick or inkcape. If one fail try other.
-     * 
+     *
      * Try to define the complete path of files, works better for exportation.
      *
      * @param string $filename
@@ -354,13 +396,13 @@ class SVGDocument extends SVGShape
 
     /**
      * Export as SVG to image document using inkscape.
-     * 
+     *
      * It will save a temporary file on default system tempo folder.
-     * 
+     *
      * @param string $filename try to use complete path. Works better.
      * @param integer $width
      * @param integer $height
-     * 
+     *
      * @return boolean ?
      */
     public function exportInkscape( $filename, $width = null, $height = null )
@@ -408,5 +450,7 @@ class SVGDocument extends SVGShape
 
         return $ok;
     }
+
 }
+
 ?>
